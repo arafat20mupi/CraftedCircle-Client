@@ -9,19 +9,19 @@ const NavBar = () => {
     const links = (
         <>
             <div className="tooltip tooltip-bottom" data-tip="Home">
-                <Link><GrHomeRounded /></Link>
+                <Link to={'/'}><GrHomeRounded /></Link>
             </div>
             <div className="tooltip tooltip-bottom" data-tip="Video">
-                <Link><MdOutlineVideoLibrary /></Link>
+                <Link to={'/video'}><MdOutlineVideoLibrary /></Link>
             </div>
             <div className="tooltip tooltip-bottom" data-tip="MarketPlace">
-                <Link><FaLandmark /></Link>
+                <Link to={'/merketPlace'}><FaLandmark /></Link>
             </div>
             <div className="tooltip tooltip-bottom" data-tip="Groups">
-                <Link><MdGroups2 /></Link>
+                <Link to={'/group'}><MdGroups2 /></Link>
             </div>
             <div className="tooltip tooltip-bottom" data-tip="CraftedAi">
-                <Link><AiFillRobot /></Link>
+                <Link to={'/craftrdAi'}><AiFillRobot /></Link>
             </div>
         </>
     );
