@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import { FaGoogle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const SignInForm = () => {
   const {
@@ -111,10 +112,10 @@ const SignInForm = () => {
 
           <p className="text-bold pb-4 text-center mt-3">
             Don't have an account?
-            <span className="text-bold text-blue-700 cursor-pointer">
+            <Link to={'/signup'} className="text-bold text-blue-700 cursor-pointer">
               {" "}
               Sign Up
-            </span>
+            </Link>
           </p>
         </div>
       </div>
