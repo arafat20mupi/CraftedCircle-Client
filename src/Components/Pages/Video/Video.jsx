@@ -16,7 +16,7 @@ const Video = () => {
     },
   ];
   return (
-    <div className="my-4 bg-white py-10 rounded mx-5 md:mx-80">
+    <div className="my-4 bg-white py-10 rounded ">
       <div className="mx-2 md:mx-10">
         <div className="ring-1 rounded ring-gray-400 my-4  bg-white py-5">
           <header className="flex items-center">

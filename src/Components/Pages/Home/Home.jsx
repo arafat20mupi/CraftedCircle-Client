@@ -5,8 +5,14 @@ import { FiHome } from "react-icons/fi";
 import { AiOutlineRobot } from "react-icons/ai";
 
 const Home = () => {
+    const messages = [
+        { name: "Ahammed Alli", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Ahammed Alli" },
+        { name: "Mark William", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Mark William" },
+        { name: "Ranvir Sing", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Ranvir Sing" },
+        { name: "Happy Rose", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Happy Rose" },
+        { name: "Angela Flower", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Angela Flower" },
+    ];
     return (
-
         <div className="flex justify-evenly h-screen max-w-screen-2xl mx-auto">
             <div className="w-[384px] hidden lg:block">
                 <div className="bg-gray-800 rounded-2xl pl-4 mx-5 my-5">
@@ -49,36 +55,25 @@ const Home = () => {
                 </div>
                 {/*Friends */}
                 <div>
-                <div className="p-4 bg-gray-800 rounded-lg shadow-md text-white">
-                    <h2 className="text-lg font-semibold mb-4">Friend Requests</h2>
-                    <div className="flex items-center p-4 bg-gray-100 rounded-lg">
-                        <img src="https://placehold.co/40x40" alt="Profile picture of Anna Loise" className="w-10 h-10 rounded-full mr-4" />
-                        <div className="flex-1">
-                            <div className="font-semibold text-black">Anna Loise</div>
-                            <div className="text-black text-sm">4 mutual Following</div>
-                        </div>
-                        <div className="flex space-x-2">
-                            <button className="bg-blue-600 text-white px-4 py-2 rounded">Accept</button>
-                            <button className="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
+                    <div className="p-4 bg-gray-800 rounded-lg shadow-md text-white">
+                        <h2 className="text-lg font-semibold mb-4">Friend Requests</h2>
+                        <div className="flex items-center p-4 bg-gray-100 rounded-lg">
+                            <img src="https://placehold.co/40x40" alt="Profile picture of Anna Loise" className="w-10 h-10 rounded-full mr-4" />
+                            <div className="flex-1">
+                                <div className="font-semibold text-black">Anna Loise</div>
+                                <div className="text-black text-sm">4 mutual Following</div>
+                            </div>
+                            <div className="flex space-x-2">
+                                <button className="bg-blue-600 text-white px-4 py-2 rounded">Accept</button>
+                                <button className="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
             </div>
-
-
-
-
         </div>
     );
 };
 
 export default Home;
 
-const messages = [
-    { name: "Ahammed Alli", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Ahammed Alli" },
-    { name: "Mark William", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Mark William" },
-    { name: "Ranvir Sing", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Ranvir Sing" },
-    { name: "Happy Rose", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Happy Rose" },
-    { name: "Angela Flower", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Angela Flower" },
-];

@@ -1,6 +1,7 @@
 import { IoMdPhotos } from "react-icons/io";
 import { IoVideocam } from "react-icons/io5";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
+import Video from "../Video/Video";
 
 
 const HomeCenter = () => {
@@ -26,7 +27,10 @@ const HomeCenter = () => {
                     </div>
                 </div>
             </div>
-            <div></div>
+            <div>
+                
+            </div>
+            <Video></Video>
         </div>
     );
 };
