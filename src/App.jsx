@@ -4,13 +4,10 @@ import Footer from "./Components/Share/Footer";
 
 const App = () => {
     return (
-        <div>
+        <div className="bg-black">
              <div>
             <NavBar></NavBar>
-
-
-            {/* <div style={{ padding: '0 5rem', minHeight: `calc(100vh - 62px)` }}> */}
-            <div className="container mx-auto">
+            <div className="py-6">
                 <Outlet></Outlet>
             </div>
             <Footer></Footer>
