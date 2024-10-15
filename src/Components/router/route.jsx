@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
-import SignInForm from "../signin/Signin";
-import SignupForm from "../signup/Signup";
+import SignupForm from "../Signup/Signup";
 import CraftedAi from "../Pages/CraftedAi/CraftedAi";
 import App from "../../App";
 import Home from "../Pages/Home/Home";
 import Groups from "../Pages/Groups/Groups";
 import MerketPlace from "../Pages/MerketPlace/MerketPlace";
 import Video from "../Pages/Video/Video";
+import Signin from "../Signin/Signin";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/signin",
-        element: <SignInForm></SignInForm>
+        element: <Signin></Signin>
       },
       {
         path: "/signup",

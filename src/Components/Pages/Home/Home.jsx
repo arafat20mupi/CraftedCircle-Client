@@ -6,6 +6,7 @@ import { AiOutlineRobot } from "react-icons/ai";
 
 const Home = () => {
     return (
+
         <div className="flex justify-evenly h-screen max-w-screen-2xl mx-auto">
             <div className="w-[384px] hidden lg:block">
                 <div className="bg-gray-800 rounded-2xl pl-4 mx-5 my-5">
@@ -64,6 +65,10 @@ const Home = () => {
                 </div>
                 </div>
             </div>
+
+
+
+
         </div>
     );
 };
