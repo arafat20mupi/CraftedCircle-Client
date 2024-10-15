@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const SignInForm = () => {
+const Signin = () => {
   const {
     register,
     handleSubmit,
@@ -123,4 +123,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default Signin;

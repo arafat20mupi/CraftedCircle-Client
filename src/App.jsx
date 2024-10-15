@@ -7,7 +7,8 @@ const App = () => {
         <div>
              <div>
             <NavBar></NavBar>
-            <div style={{ padding: '0 5rem', minHeight: `calc(100vh - 62px)` }}>
+            {/* <div style={{ padding: '0 5rem', minHeight: `calc(100vh - 62px)` }}> */}
+            <div className="container mx-auto">
                 <Outlet></Outlet>
             </div>
             <Footer></Footer>
