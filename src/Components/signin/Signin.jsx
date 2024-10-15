@@ -114,7 +114,7 @@ const SignInForm = () => {
 
               <div className="mt-6 flex justify-center items-center mb-3">
                 <p className="font-bold pb-4 text-center mt-3">
-                  Don't have an account?
+                  Don&apos;t have an account?
                   <span
                     className="text-blue-700 cursor-pointer hover:underline ml-2"
                     onClick={() => console.log("Redirect to Sign Up")}
