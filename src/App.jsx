@@ -7,7 +7,7 @@ const App = () => {
         <div>
              <div>
             <NavBar></NavBar>
-            <div style={{ padding: '0 5rem', minHeight: `calc(100vh - 62px)` }}>
+            <div>
                 <Outlet></Outlet>
             </div>
             <Footer></Footer>
