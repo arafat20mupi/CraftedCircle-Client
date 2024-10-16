@@ -7,12 +7,12 @@ import { MdGroups2, MdOutlineVideoLibrary } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
-    const user = false;
+    const user = true;
     const [isFocused, setIsFocused] = useState(false)
     const links = (
         <>
             <div className="tooltip tooltip-bottom" data-tip="Home">
-                <Link to={'/'}><GrHomeRounded  className="text-black" /></Link>
+                < Link to={'/'}><GrHomeRounded  className="text-black" /></Link>
             </div>
             <div className="tooltip tooltip-bottom" data-tip="Video">
                 <Link to={'/video'}><MdOutlineVideoLibrary className="text-black" /></Link>
