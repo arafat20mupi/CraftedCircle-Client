@@ -15,9 +15,15 @@ const Home = () => {
         { name: "Angela Flower", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Angela Flower" },
     ];
     return (
+<<<<<<< HEAD
+        <div className="flex justify-evenly max-w-screen-2xl mx-auto">
+            <div className="w-[384px] hidden lg:block">
+                <div className="bg-gray-800  h-screen rounded-2xl pl-4 mx-5 my-5">
+=======
         <div className="grid grid-cols-1 lg:grid-cols-[1fr,2fr,1fr] max-w-screen-2xl mx-auto">
             <div className=" hidden lg:block">
                 <div className="shadow-md bg-white border-[#D1D5DB] border-2 h-screen rounded-2xl pl-4 mx-5 my-5">
+>>>>>>> d934edb4a5f265ca039f63267f16f537efef9570
                     <div>
                         <div className="avatar flex text-center pt-4 pl-1 items-center gap-3">
                             <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">

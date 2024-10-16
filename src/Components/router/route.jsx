@@ -7,6 +7,7 @@ import Groups from "../Pages/Groups/Groups";
 import MerketPlace from "../Pages/MerketPlace/MerketPlace";
 import Video from "../Pages/Video/Video";
 import Signin from "../Signin/Signin";
+import Profile from "../Pages/Profile/Profile";
 
 const router = createBrowserRouter([
   {
@@ -15,33 +16,37 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home></Home>
+        element: <Home></Home>,
       },
       {
         path: "/signin",
-        element: <Signin></Signin>
+        element: <Signin></Signin>,
       },
       {
         path: "/signup",
-        element: <SignupForm></SignupForm>
+        element: <SignupForm></SignupForm>,
       },
       {
-        path: '/craftrdAi',
-        element: <CraftedAi></CraftedAi>
+        path: "/craftrdAi",
+        element: <CraftedAi></CraftedAi>,
       },
       {
-        path: '/group',
-        element: <Groups></Groups>
+        path: "/group",
+        element: <Groups></Groups>,
       },
       {
         path: "/merketPlace",
-        element: <MerketPlace></MerketPlace>
+        element: <MerketPlace></MerketPlace>,
       },
       {
-        path: '/video',
-        element: <Video></Video>
-      }
-    ]
+        path: "/video",
+        element: <Video></Video>,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+    ],
   },
 ]);
 
