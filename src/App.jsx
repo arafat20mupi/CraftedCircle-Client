@@ -4,7 +4,7 @@ import Footer from "./Components/Share/Footer";
 
 const App = () => {
     return (
-        <div className="bg-black">
+        <div className="bg-gray-100">
              <div>
             <NavBar></NavBar>
             <div className="py-6">
