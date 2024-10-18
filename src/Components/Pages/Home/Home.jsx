@@ -3,6 +3,11 @@ import HomeCenter from "./HomeCenter";
 import { MdGroups3, MdVideoLibrary } from "react-icons/md";
 import { FiHome } from "react-icons/fi";
 import { AiOutlineRobot } from "react-icons/ai";
+import { GrHomeRounded } from "react-icons/gr";
+import { BsPostcard } from "react-icons/bs";
+import { FaFacebookMessenger } from "react-icons/fa6";
+import { FaUserFriends } from "react-icons/fa";
+import { IoIosNotifications } from "react-icons/io";
 
 const Home = () => {
 
@@ -15,15 +20,9 @@ const Home = () => {
         { name: "Angela Flower", text: "Lorem ipsum dolor sit amet.", img: "https://placehold.co/32x32", alt: "Profile picture of Angela Flower" },
     ];
     return (
-<<<<<<< HEAD
         <div className="flex justify-evenly max-w-screen-2xl mx-auto">
             <div className="w-[384px] hidden lg:block">
-                <div className="bg-gray-800  h-screen rounded-2xl pl-4 mx-5 my-5">
-=======
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr,2fr,1fr] max-w-screen-2xl mx-auto">
-            <div className=" hidden lg:block">
-                <div className="shadow-md bg-white border-[#D1D5DB] border-2 h-screen rounded-2xl pl-4 mx-5 my-5">
->>>>>>> d934edb4a5f265ca039f63267f16f537efef9570
+                <div className="bg-white border-[#D1D5DB] border-2 h-screen rounded-2xl pl-4 mx-5 my-5">
                     <div>
                         <div className="avatar flex text-center pt-4 pl-1 items-center gap-3">
                             <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
@@ -32,6 +31,11 @@ const Home = () => {
                             <h1 className="font-medium text-2xl">UserName</h1>
                         </div>
                     </div>
+                    <h1 ><Link to={'/'} className="flex items-center gap-2"><GrHomeRounded className="text-5xl text-[#374151] my-4" /><span className="text-2xl font-medium text-[#374151]">Home</span></Link></h1>
+                    <h1 ><Link to={'/'} className="flex items-center gap-2"><BsPostcard className="text-5xl text-[#374151] my-4" /><span className="text-2xl font-medium text-[#374151]">Post</span></Link></h1>
+                    <h1 ><Link to={'/'} className="flex items-center gap-2"><FaFacebookMessenger className="text-5xl text-[#374151] my-4" /><span className="text-2xl font-medium text-[#374151]">Messanger</span></Link></h1>
+                    <h1 ><Link to={'/'} className="flex items-center gap-2"><FaUserFriends className="text-5xl text-[#374151] my-4" /><span className="text-2xl font-medium text-[#374151]">Friends</span></Link></h1>
+                    <h1 ><Link to={'/'} className="flex items-center gap-2"><IoIosNotifications className="text-5xl text-[#374151] my-4" /><span className="text-2xl font-medium text-[#374151]">Notification</span></Link></h1>
                     <h1 ><Link to={'/video'} className="flex items-center gap-2"><MdVideoLibrary className="text-5xl text-[#374151] my-4" /><span className="text-2xl font-medium text-[#374151]">Video</span></Link></h1>
                     <h1 ><Link to={'/group'} className="flex items-center gap-2"><MdGroups3 className="text-5xl text-[#374151] my-4" /> <span className="text-2xl font-medium text-[#374151]">Groups</span></Link></h1>
                     <h1 ><Link to={'/merketPlace'} className="flex items-center gap-2"><FiHome className="text-5xl text-[#374151] my-4" /><span className="text-2xl font-medium text-[#374151]">MarketPlace</span></Link></h1>
