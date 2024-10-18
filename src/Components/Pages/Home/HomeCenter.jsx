@@ -33,9 +33,9 @@ const HomeCenter = () => {
                 </div>
             </div>
             <div>
-
-            </div>
             <Video></Video>
+            </div>
+            
         </div>
     );
 };
