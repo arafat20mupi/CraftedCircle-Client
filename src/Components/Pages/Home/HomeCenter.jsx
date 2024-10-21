@@ -32,6 +32,7 @@ const HomeCenter = () => {
                     </div>
                 </div>
             </div>
+            {/*code */}
             <div>
             <Video></Video>
             </div>
