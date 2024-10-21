@@ -7,7 +7,7 @@ import { MdGroups2, MdOutlineVideoLibrary } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  const user = true;
+  const user = false;
   const [isFocused, setIsFocused] = useState(false);
   
   const links = (
