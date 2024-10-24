@@ -26,24 +26,23 @@ const HomeCenter = () => {
         <div className="bg-white px-1 md:px-5 py-3">
           <div className="flex items-center justify-around">
             <span className="text-sm md:text-xl flex items-center cursor-pointer hover:bg-slate-100 duration-200 ring-slate-200 md:ring-1 rounded-md px-2 py-2">
-            <FaVideo className="text-red-600 mx-3"/>
-            Video
+              <FaVideo className="text-red-600 mx-3" />
+              Video
             </span>
             <span className="text-sm md:text-xl flex items-center cursor-pointer hover:bg-slate-100 duration-200 ring-slate-200 md:ring-1 rounded-md px-2 py-2">
-            <IoMdPhotos className="text-green-600 mx-3"/>
-            Media
+              <IoMdPhotos className="text-green-600 mx-3" />
+              Media
             </span>
             <span className="text-sm md:text-xl flex items-center cursor-pointer hover:bg-slate-100 duration-200 ring-slate-200 md:ring-1 rounded-md px-2 py-2">
-            <MdOutlineEmojiEmotions className="text-yellow-600 mx-3"/>
-            Event/Feelings
+              <MdOutlineEmojiEmotions className="text-yellow-600 mx-3" />
+              Event/Feelings
             </span>
-            
           </div>
         </div>
       </div>
-        <div className="my-1">
-          <Video/>
-        </div>
+      <div className="my-1">
+        <Video />
+      </div>
     </div>
   );
 };

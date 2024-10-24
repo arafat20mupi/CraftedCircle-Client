@@ -1,42 +1,31 @@
 import { useState } from "react";
-import { GoDependabot } from "react-icons/go";
-import { FaCentSign, FaBasketShopping } from "react-icons/fa6";
-import { FaHome } from "react-icons/fa";
+import { GrHomeRounded } from "react-icons/gr";
+import { FaCentSign, FaLandmark } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
-import { MdGroups2 } from "react-icons/md";
-import { RxVideo } from "react-icons/rx";
+import { MdGroups2, MdOutlineVideoLibrary } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { AiFillRobot } from "react-icons/ai";
 
 const NavBar = () => {
   const user = true;
   const [isFocused, setIsFocused] = useState(false);
-
+  
   const links = (
     <>
       <div className="tooltip tooltip-bottom" data-tip="Home">
-        <Link to={"/"}>
-          <FaHome className="text-black" />
-        </Link>
+        <Link to={'/'}><GrHomeRounded className="text-black" /></Link>
       </div>
-      <div className="tooltip tooltip-bottom" data-tip="Videos">
-        <Link to={"/video"}>
-          <RxVideo className="text-black" />
-        </Link>
+      <div className="tooltip tooltip-bottom" data-tip="Video">
+        <Link to={'/video'}><MdOutlineVideoLibrary className="text-black" /></Link>
       </div>
       <div className="tooltip tooltip-bottom" data-tip="MarketPlace">
-        <Link to={"/merketPlace"}>
-          <FaBasketShopping className="text-black" />
-        </Link>
+        <Link to={'/marketPlace'}><FaLandmark className="text-black" /></Link>
       </div>
       <div className="tooltip tooltip-bottom" data-tip="Groups">
-        <Link to={"/group"}>
-          <MdGroups2 className="text-black" />
-        </Link>
+        <Link to={'/group'}><MdGroups2 className="text-black" /></Link>
       </div>
-      <div className="tooltip tooltip-bottom" data-tip="Crafted Ai">
-        <Link to={"/craftedAi"}>
-          <GoDependabot className="text-black" />
-        </Link>
+      <div className="tooltip tooltip-bottom" data-tip="CraftedAi">
+        <Link to={'/craftedAi'}><AiFillRobot className="text-black" /></Link>
       </div>
     </>
   );
@@ -57,9 +46,7 @@ const NavBar = () => {
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
             />
-            {isFocused && (
-              <IoMdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            )}
+            {!isFocused && <IoMdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2" />}
           </div>
         </div>
 
@@ -72,11 +59,7 @@ const NavBar = () => {
         <div className="col-span-1 justify-self-end">
           {user ? (
             <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
                   <img
                     alt="Profile"
@@ -84,28 +67,14 @@ const NavBar = () => {
                   />
                 </div>
               </div>
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-              >
-                <li>
-                  <a className="justify-between">Profile</a>
-                </li>
-                <li>
-                  <a>Settings</a>
-                </li>
-                <li>
-                  <a>Logout</a>
-                </li>
+              <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                <li><a className="justify-between">Profile</a></li>
+                <li><a>Settings</a></li>
+                <li><a>Logout</a></li>
               </ul>
             </div>
           ) : (
-            <Link
-              className="btn bg-[#008080] hover:bg-[#006666] text-white"
-              to="/signup"
-            >
-              SignUp
-            </Link>
+            <Link className="btn bg-[#008080] hover:bg-[#006666] text-white" to="/signup">SignUp</Link>
           )}
         </div>
       </div>
