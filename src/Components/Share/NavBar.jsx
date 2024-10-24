@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { AiFillRobot } from "react-icons/ai";
-import { FaCentSign, FaLandmark } from "react-icons/fa6";
-import { GrHomeRounded } from "react-icons/gr";
+import { GoDependabot } from "react-icons/go";
+import { FaCentSign, FaBasketShopping } from "react-icons/fa6";
+import { FaHome } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
-import { MdGroups2, MdOutlineVideoLibrary } from "react-icons/md";
+import { MdGroups2 } from "react-icons/md";
+import { RxVideo } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
@@ -14,17 +15,17 @@ const NavBar = () => {
     <>
       <div className="tooltip tooltip-bottom" data-tip="Home">
         <Link to={"/"}>
-          <GrHomeRounded className="text-black" />
+          <FaHome className="text-black" />
         </Link>
       </div>
-      <div className="tooltip tooltip-bottom" data-tip="Video">
+      <div className="tooltip tooltip-bottom" data-tip="Videos">
         <Link to={"/video"}>
-          <MdOutlineVideoLibrary className="text-black" />
+          <RxVideo className="text-black" />
         </Link>
       </div>
       <div className="tooltip tooltip-bottom" data-tip="MarketPlace">
         <Link to={"/merketPlace"}>
-          <FaLandmark className="text-black" />
+          <FaBasketShopping className="text-black" />
         </Link>
       </div>
       <div className="tooltip tooltip-bottom" data-tip="Groups">
@@ -32,9 +33,9 @@ const NavBar = () => {
           <MdGroups2 className="text-black" />
         </Link>
       </div>
-      <div className="tooltip tooltip-bottom" data-tip="CraftedAi">
+      <div className="tooltip tooltip-bottom" data-tip="Crafted Ai">
         <Link to={"/craftedAi"}>
-          <AiFillRobot className="text-black" />
+          <GoDependabot className="text-black" />
         </Link>
       </div>
     </>
