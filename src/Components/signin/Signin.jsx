@@ -1,125 +1,129 @@
+import { Link, useNavigate } from "react-router-dom";
+import Lottie from "lottie-react";
+import { useAuth } from "../../Context/authContext";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import signup_Animation from "../../../public/Animation.json";
 
-import { FaGoogle } from "react-icons/fa";
-
-const SignInForm = () => {
+const SignIn = () => {
+  const { createUser, checkUserExists } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+
     formState: { errors },
+    setError,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = async (data) => {
+    const { email, password } = data;
 
-  const handleGoogleSignIn = () => {
-    console.log("Google Sign In clicked");
+    const userExists = await checkUserExists(email);
+    if (userExists) {
+      setError("email", {
+        type: "manual",
+        message: "email already in use",
+      });
+      return;
+    }
+
+    try {
+      await createUser(email, password);
+      toast.success("Sign In Successful!");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
-    <div className="flex h-screen">
-      <div
-        className="w-1/2 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('https://www.istockphoto.com/photo/no-better-adventure-buddy-gm1265024528-370657105?utm_campaign=srp_photos_top&utm_content=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Ffree-images&utm_medium=affiliate&utm_source=unsplash&utm_term=free+images%3A%3Areduced-affiliates%3Aquarter')`,
-        }}
-      ></div>
-
-      <div className="w-1/2 flex items-center justify-center p-6 bg-white shadow-md rounded-md">
-        <div className="max-w-md w-full">
-          <h1 className="text-center text-blue-700 font-bold mb-4">
-            Welcome back!
-          </h1>
-          <h2 className="text-bold text-black pb-3">
-            The faster you login, the faster you can build your resume.
+    <div className="flex items-center justify-center py-6 md:py-10 lg:py-16">
+      <div className="lg:w-full lg:max-w-6xl flex flex-col-reverse lg:flex-row-reverse bg-white rounded-lg overflow-hidden shadow-lg">
+        {/* Lottie Animation Section */}
+        <div className="w-full lg:w-1/2 flex justify-center items-center p-6 lg:p-10 bg-green-500 bg-opacity-5">
+          <Lottie
+            animationData={signup_Animation}
+            className="w-full h-full max-h-[400px] md:max-h-[500px] lg:max-h-[600px]"
+          />
+        </div>
+        {/* Form Section */}
+        <div className="w-full lg:w-1/2 p-8 bg-green-500 bg-opacity-5">
+          <h2 className="text-3xl font-bold lg:mt-8 mb-2">
+            Welcome Back{" "}
+            <span className="text-green-500 text-4xl">Career Canvas!</span>
           </h2>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
+            {/* Email Input */}
             <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">
+              <label className="block text-sm font-bold mb-2" htmlFor="email">
                 Email
               </label>
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="w-full h-12 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                id="email"
                 {...register("email", { required: "Email is required" })}
+                placeholder="Enter your Email"
+                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500 ${
+                  errors.email ? "border-red-500" : "border-gray-300"
+                }`}
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors?.email?.message}
-                </p>
+                <p className="text-red-500">{errors.email.message}</p>
               )}
             </div>
 
+            {/* Password Input */}
             <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">
+              <label
+                className="block text-sm font-bold mb-2"
+                htmlFor="password"
+              >
                 Password
               </label>
               <input
                 type="password"
-                placeholder="Enter your password"
-                className="w-full h-12 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                id="password"
                 {...register("password", { required: "Password is required" })}
+                placeholder="Enter your Password"
+                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500 ${
+                  errors.password ? "border-red-500" : "border-gray-300"
+                }`}
               />
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors?.password?.message}
-                </p>
+                <p className="text-red-500">{errors.password.message}</p>
               )}
             </div>
-            <div className="flex justify-between">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                {...register("rememberMe")}
-                className="mr-2"
-              />
-              <label htmlFor="rememberMe" className="text-gray-700">
-                Remember Me
-              </label>
-              <span
-                to="/forgot-password"
-                className="text-blue-700 hover:underline"
+
+            {/* Submit Button */}
+            <div className="mt-8 flex flex-col gap-y-4">
+              <button
+                type="submit"
+                className="w-full bg-indigo-500 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
-                Forgot Password?
-              </span>
+                Sign In
+              </button>
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-indigo-500 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              Sign In
-            </button>
+            {/* Signup Link */}
+            <div className="mt-6 flex justify-center items-center mb-3">
+              <p className="font-bold pb-4 text-center mt-3">
+                Don&apos;t have an account?
+                <Link
+                  to="/signup"
+                  className="text-blue-700 cursor-pointer hover:underline ml-2"
+                >
+                  Sign Up
+                </Link>
+              </p>
+            </div>
           </form>
-
-          <div className="flex flex-col items-center mt-4">
-            <p className="text-bold pb-2">Or</p>
-            <button
-              type="button"
-              onClick={handleGoogleSignIn}
-              className="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              <div className="flex items-center justify-center">
-                <FaGoogle className="mr-2" />
-                Sign In with Google
-              </div>
-            </button>
-          </div>
-
-          <p className="text-bold pb-4 text-center mt-3">
-            Don't have an account?
-            <span className="text-bold text-blue-700 cursor-pointer">
-              {" "}
-              Sign Up
-            </span>
-          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default SignInForm;
+export default SignIn;
