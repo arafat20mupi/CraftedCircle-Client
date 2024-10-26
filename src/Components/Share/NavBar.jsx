@@ -5,7 +5,7 @@ import { IoMdSearch } from "react-icons/io";
 import { MdGroups2, MdOutlineVideoLibrary } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { AiFillRobot } from "react-icons/ai";
-
+import { IoMdChatboxes } from "react-icons/io";
 const NavBar = () => {
   const user = true;
   const [isFocused, setIsFocused] = useState(false);
@@ -56,7 +56,10 @@ const NavBar = () => {
         </div>
 
         {/* User Profile or SignUp */}
-        <div className="col-span-1 justify-self-end">
+        <div className="col-span-1 flex items-center justify-self-end">
+          <div className="bg-gray-200 rounded-full cursor-pointer active:scale-95 duration-150 p-2 mx-3">
+          <IoMdChatboxes className="text-3xl"/>
+          </div>
           {user ? (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
