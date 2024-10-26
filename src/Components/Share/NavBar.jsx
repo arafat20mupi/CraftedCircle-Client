@@ -1,18 +1,23 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GrHomeRounded } from "react-icons/gr";
-import { FaCentSign, FaLandmark } from "react-icons/fa6";
+import { FaLandmark } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
 import { MdGroups2, MdOutlineVideoLibrary } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { AiFillRobot } from "react-icons/ai";
+import { AuthContext } from "../../provider/AuthProvider";
+import toast from "react-hot-toast";
 
 const NavBar = () => {
-
-
-  const user = true;
+  const { user, logOut } = useContext(AuthContext);
 
   const [isFocused, setIsFocused] = useState(false);
-  
+
+  const handleLogout = () => {
+    logOut();
+    toast.success('Logged out successfully')
+  }
+
   const links = (
     <>
       <div className="tooltip tooltip-bottom" data-tip="Home">
@@ -22,13 +27,13 @@ const NavBar = () => {
         <Link to={'/video'}><MdOutlineVideoLibrary className="text-black" /></Link>
       </div>
       <div className="tooltip tooltip-bottom" data-tip="MarketPlace">
-        <Link to={'/marketPlace'}><FaLandmark className="text-black" /></Link>
+        <Link to={'/merketPlace'}><FaLandmark className="text-black" /></Link>
       </div>
       <div className="tooltip tooltip-bottom" data-tip="Groups">
         <Link to={'/group'}><MdGroups2 className="text-black" /></Link>
       </div>
       <div className="tooltip tooltip-bottom" data-tip="CraftedAi">
-        <Link to={'/craftedAi'}><AiFillRobot className="text-black" /></Link>
+        <Link to={'/craftrdAi'}><AiFillRobot className="text-black" /></Link>
       </div>
     </>
   );
@@ -38,9 +43,9 @@ const NavBar = () => {
       <div className="grid grid-cols-3 items-center p-2 gap-4">
         {/* Logo and Search Bar */}
         <div className="flex items-center space-x-2 col-span-2 sm:col-span-1">
-          <div className="bg-blue-600 rounded-full p-2">
-            <FaCentSign />
-          </div>
+          <Link to={'/'} className="bg-blue-600  rounded-full h-16 w-16 ">
+            <img src="images.png" alt="" />
+          </Link>
           <div className="relative">
             <input
               type="text"
@@ -73,7 +78,7 @@ const NavBar = () => {
               <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                 <li><a className="justify-between">Profile</a></li>
                 <li><a>Settings</a></li>
-                <li><a>Logout</a></li>
+                <li><button onClick={handleLogout}>Logout</button></li>
               </ul>
             </div>
           ) : (
