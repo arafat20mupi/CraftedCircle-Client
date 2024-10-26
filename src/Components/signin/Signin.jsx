@@ -1,18 +1,17 @@
 import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
-import { useAuth } from "../../Context/authContext";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import signup_Animation from "../../../public/Animation.json";
+import { auth } from "../../provider/AuthProvider";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const SignIn = () => {
-  const { createUser, checkUserExists } = useAuth();
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-
     formState: { errors },
     setError,
   } = useForm();
@@ -20,21 +19,23 @@ const SignIn = () => {
   const onSubmit = async (data) => {
     const { email, password } = data;
 
-    const userExists = await checkUserExists(email);
-    if (userExists) {
-      setError("email", {
-        type: "manual",
-        message: "email already in use",
-      });
-      return;
-    }
-
     try {
-      await createUser(email, password);
+      // Firebase sign-in
+      await signInWithEmailAndPassword(auth, email, password);
       toast.success("Sign In Successful!");
       navigate("/");
     } catch (error) {
-      toast.error(error.message);
+      if (
+        error.code === "auth/user-not-found" ||
+        error.code === "auth/wrong-password"
+      ) {
+        setError("email", {
+          type: "manual",
+          message: "Invalid email or password",
+        });
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 

@@ -1,29 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
-import { useAuth } from "../../Context/authContext";
+//import { useAuth } from "../../Context/authContext";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+
 import { FaGoogle } from "react-icons/fa6";
 import "react-toastify/dist/ReactToastify.css";
 import signup_Animation from "../../../public/Animation.json";
+import { auth } from "../../provider/AuthProvider";
+import { createUserWithEmailAndPassword } from "firebase/auth"; // Correct Firebase import
+import toast from "react-hot-toast";
 
 const SignUp = () => {
-  const { createUser } = useAuth();
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const watchedPassword = watch("password");
 
-  const password = watch("password");
-
+  // Handle form submission and create user with Firebase
   const onSubmit = async (data) => {
-    console.log(data);
     const { email, password } = data;
     try {
-      await createUser(email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       toast.success("User Created Successfully!");
       navigate("/signin");
     } catch (error) {
@@ -42,8 +38,7 @@ const SignUp = () => {
         {/* Form Section */}
         <div className="w-full lg:w-1/2 p-8 bg-green-500 bg-opacity-5">
           <h2 className="text-3xl font-bold lg:mt-8 mb-2">
-            Welcome To{" "}
-            <span className="text-green-500 text-4xl">Career Canvas!</span>
+            Welcome To <span className="text-green-500 text-4xl">Career Canvas!</span>
           </h2>
           <p className="text-lg font-semibold">
             The faster you Sign Up, the faster you can build your resume.
@@ -51,9 +46,7 @@ const SignUp = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
             <div className="mb-4">
-              <label className="block text-sm font-bold mb-2" htmlFor="name">
-                Name
-              </label>
+              <label className="block text-sm font-bold mb-2" htmlFor="name">Name</label>
               <input
                 type="text"
                 id="name"
@@ -61,15 +54,11 @@ const SignUp = () => {
                 placeholder="Enter your Name"
                 className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
               />
-              {errors.name && (
-                <p className="text-red-500">{errors.name.message}</p>
-              )}
+              {errors.name && <p className="text-red-500">{errors.name.message}</p>}
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-bold mb-2" htmlFor="email">
-                Email
-              </label>
+              <label className="block text-sm font-bold mb-2" htmlFor="email">Email</label>
               <input
                 type="email"
                 id="email"
@@ -77,18 +66,11 @@ const SignUp = () => {
                 placeholder="Enter your Email"
                 className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
               />
-              {errors.email && (
-                <p className="text-red-500">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </div>
 
             <div className="mb-4">
-              <label
-                className="block text-sm font-bold mb-2"
-                htmlFor="password"
-              >
-                Password
-              </label>
+              <label className="block text-sm font-bold mb-2" htmlFor="password">Password</label>
               <input
                 type="password"
                 id="password"
@@ -100,39 +82,28 @@ const SignUp = () => {
                   },
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-                    message:
-                      "Password must contain at least 6 character one letter and one number",
+                    message: "Password must contain at least 6 characters, one letter, and one number",
                   },
                 })}
                 placeholder="Enter your Password"
                 className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
               />
-              {errors.password && (
-                <p className="text-red-500">{errors.password.message}</p>
-              )}
+              {errors.password && <p className="text-red-500">{errors.password.message}</p>}
             </div>
 
             <div className="mb-4">
-              <label
-                className="block text-sm font-bold mb-2"
-                htmlFor="confirmPassword"
-              >
-                Confirm Password
-              </label>
+              <label className="block text-sm font-bold mb-2" htmlFor="confirmPassword">Confirm Password</label>
               <input
                 type="password"
                 id="confirmPassword"
                 {...register("confirmPassword", {
                   required: "Confirm Password is required",
-                  validate: (value) =>
-                    value === password || "Passwords do not match",
+                  validate: (value) => value === watchedPassword || "Passwords do not match",
                 })}
                 placeholder="Confirm Password"
                 className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
               />
-              {errors.confirmPassword && (
-                <p className="text-red-500">{errors.confirmPassword.message}</p>
-              )}
+              {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
             </div>
 
             <button
@@ -153,9 +124,7 @@ const SignUp = () => {
 
             <p className="mt-6 text-center font-bold">
               Already have an account?{" "}
-              <Link to="/signin" className="font-bold text-green-500">
-                Sign In
-              </Link>
+              <Link to="/signin" className="font-bold text-green-500">Sign In</Link>
             </p>
           </form>
         </div>
