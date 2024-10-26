@@ -1,3 +1,4 @@
+
 import React from "react";
 import HomeCenter from "./HomeCenter";
 import videoIcon from "../../../assets/Icons/zoom.png";
@@ -6,6 +7,7 @@ import GroupIcon from "../../../assets/Icons/people.png";
 import RobotIcon from "../../../assets/Icons/robot.png";
 import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
+
 const Home = () => {
   const users = [
     {

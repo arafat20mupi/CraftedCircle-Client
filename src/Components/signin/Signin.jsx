@@ -1,140 +1,136 @@
+import { Link, useNavigate } from "react-router-dom";
+import Lottie from "lottie-react";
 import { useForm } from "react-hook-form";
-import { FaGoogle } from "react-icons/fa";
+import signup_Animation from "../../../public/Animation.json";
+import { useContext } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
+import { FaGoogle } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
-const Signin = () => {
+const SignIn = () => {
+  const navigate = useNavigate();
+  const { signIn, signGoogle } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const { email, password } = data;
+
+    try {
+      await signIn(email, password);
+      toast.success("Signed in successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message || "Sign-in failed");
+      setError("email", { type: "manual", message: "Invalid credentials" });
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Google Sign In clicked");
+  const handleGoogleSignIn = async () => {
+    try {
+      await signGoogle();
+      toast.success("Google signed in successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message || "Google sign-in failed");
+    }
   };
 
   return (
-    <div className="flex w-full bg-white overflow-hidden mb-4">
-      {/* Form Section */}
-      <div className="w-full flex items-center justify-center lg:w-1/2">
-        <div className="bg-white px-10 py-20 rounded-3xl border-2 border-gray-100">
-          <h1 className="text-5xl font-semibold mt-2">Welcome back!</h1>
-          <p className="font-medium text-lg text-gray-500 mt-5">
-            The faster you login, the faster you can build your resume.
-          </p>
-          <div className="mt-8">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4">
-                <label
-                  className="block text-gray-700 font-bold mb-2"
-                  htmlFor="email"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="Enter your email"
-                  className="w-full h-12 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  {...register("email", { required: "Email is required" })}
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors?.email?.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-gray-700 font-bold mb-2"
-                  htmlFor="password"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="Enter your password"
-                  className="w-full h-12 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
-                />
-                {errors.password && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors?.password?.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="mt-8 flex justify-between items-center">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="rememberMe"
-                    {...register("rememberMe")}
-                    className="mr-2"
-                  />
-                  <label htmlFor="rememberMe" className="text-gray-700">
-                    Remember Me
-                  </label>
-                </div>
-
-                <a
-                  href="/forgot-password"
-                  className="text-blue-700 hover:underline"
-                >
-                  Forgot Password?
-                </a>
-              </div>
-
-              <div className="mt-8 flex flex-col gap-y-4">
-                <button
-                  type="submit"
-                  className="w-full bg-indigo-500 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  Sign In
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleGoogleSignIn}
-                  className="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-                >
-                  <div className="flex items-center justify-center">
-                    <FaGoogle className="mr-2" />
-                    Sign In with Google
-                  </div>
-                </button>
-              </div>
-
-              <div className="mt-6 flex justify-center items-center mb-3">
-                <p className="font-bold pb-4 text-center mt-3">
-                  Don&apos;t have an account?
-                  <span
-                    className="text-blue-700 cursor-pointer hover:underline ml-2"
-                    onClick={() => console.log("Redirect to Sign Up")}
-                  >
-                    Sign Up
-                  </span>
-                </p>
-              </div>
-            </form>
-          </div>
+    <div className="flex items-center justify-center py-6 md:py-10 lg:py-16">
+      <div className="lg:w-full lg:max-w-6xl flex flex-col-reverse lg:flex-row-reverse bg-white rounded-lg overflow-hidden shadow-lg">
+        {/* Lottie Animation Section */}
+        <div className="w-full lg:w-1/2 flex justify-center items-center p-6 lg:p-10 bg-blue-500 bg-opacity-5">
+          <Lottie
+            animationData={signup_Animation}
+            className="w-full h-full max-h-[400px] md:max-h-[500px] lg:max-h-[600px]"
+          />
         </div>
-      </div>
+        {/* Form Section */}
+        <div className="w-full lg:w-1/2 p-8 bg-blue-500 bg-opacity-5">
+          <h2 className="text-3xl font-bold lg:mt-8 mb-2">
+            Welcome Back <span className="text-blue-500 text-4xl">Crafted Circle</span>
+          </h2>
 
-      {/* Background Section for lg devices */}
-      <div className="hidden lg:flex w-1/2 items-center justify-center bg-gray-200">
-        <div className="w-60 h-60 bg-gradient-to-tr from-violet-500 to-pink-500 rounded-full animate-bounce" />
-        <div className="w-1/3 h-1/2 absolute bottom-0 bg-white/10 backdrop-blur-lg" />
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
+            {/* Email Input */}
+            <div className="mb-4">
+              <label className="block text-sm font-bold mb-2" htmlFor="email">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                {...register("email", { required: "Email is required" })}
+                placeholder="Enter your Email"
+                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-indigo-500 ${
+                  errors.email ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.email && (
+                <p className="text-red-500">{errors.email.message}</p>
+              )}
+            </div>
+
+            {/* Password Input */}
+            <div className="mb-4">
+              <label className="block text-sm font-bold mb-2" htmlFor="password">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                {...register("password", { required: "Password is required" })}
+                placeholder="Enter your Password"
+                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-indigo-500 ${
+                  errors.password ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.password && (
+                <p className="text-red-500">{errors.password.message}</p>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <div className="mt-8 flex flex-col gap-y-4">
+              <button
+                type="submit"
+                className="w-full bg-indigo-500 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Sign In
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="w-full mt-4 flex items-center justify-center border-blue-500 shadow-md hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded-lg "
+            >
+              <FaGoogle className="mr-2" />
+              Sign Up with Google
+            </button>
+
+            {/* Signup Link */}
+            <div className="mt-6 flex justify-center items-center mb-3">
+              <span className="font-bold pb-4 text-center mt-3">
+                Don&apos;t have an account?
+                <Link
+                  to="/signup"
+                  className="text-blue-700 cursor-pointer hover:underline ml-2"
+                >
+                  Sign Up
+                </Link>
+              </span>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Signin;
+export default SignIn;
