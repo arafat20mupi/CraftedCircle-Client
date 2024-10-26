@@ -1,4 +1,4 @@
-import React from "react";
+
 import { FaImage } from "react-icons/fa6";
 import { FaVideo } from "react-icons/fa6";
 import { MdOutlineEmojiEmotions } from "react-icons/md";

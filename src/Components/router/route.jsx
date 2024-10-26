@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import SignupForm from "../Signup/Signup";
 import CraftedAi from "../Pages/CraftedAi/CraftedAi";
 import App from "../../App";
 import Home from "../Pages/Home/Home";
@@ -8,6 +7,7 @@ import MerketPlace from "../Pages/MerketPlace/MerketPlace";
 import Video from "../Pages/Video/Video";
 import Signin from "../Signin/Signin";
 import Profile from "../Pages/Profile/Profile";
+import SignUp from "../signup/Signup";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/signup",
-        element: <SignupForm></SignupForm>,
+        element: <SignUp></SignUp>,
       },
       {
         path: "/craftrdAi",

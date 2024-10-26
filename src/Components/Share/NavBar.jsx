@@ -7,7 +7,10 @@ import { Link } from "react-router-dom";
 import { AiFillRobot } from "react-icons/ai";
 
 const NavBar = () => {
+
+
   const user = true;
+
   const [isFocused, setIsFocused] = useState(false);
   
   const links = (

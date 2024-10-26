@@ -1,4 +1,4 @@
-import React from "react";
+
 import HomeCenter from './HomeCenter';
 const Home = () => {
   return (
