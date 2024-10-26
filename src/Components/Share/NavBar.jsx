@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { AiFillRobot } from "react-icons/ai";
-import { FaCentSign, FaLandmark } from "react-icons/fa6";
 import { GrHomeRounded } from "react-icons/gr";
+import { FaCentSign, FaLandmark } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
 import { MdGroups2, MdOutlineVideoLibrary } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { AiFillRobot } from "react-icons/ai";
 
 const NavBar = () => {
-  const user = false;
+
+
+  const user = true;
+
   const [isFocused, setIsFocused] = useState(false);
   
   const links = (
