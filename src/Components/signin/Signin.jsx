@@ -1,14 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import signup_Animation from "../../../public/Animation.json";
-import { auth } from "../../provider/AuthProvider";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { useContext } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
+import { FaGoogle } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const { signIn, signGoogle } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -20,22 +21,22 @@ const SignIn = () => {
     const { email, password } = data;
 
     try {
-      // Firebase sign-in
-      await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Sign In Successful!");
+      await signIn(email, password);
+      toast.success("Signed in successfully");
       navigate("/");
     } catch (error) {
-      if (
-        error.code === "auth/user-not-found" ||
-        error.code === "auth/wrong-password"
-      ) {
-        setError("email", {
-          type: "manual",
-          message: "Invalid email or password",
-        });
-      } else {
-        toast.error(error.message);
-      }
+      toast.error(error.message || "Sign-in failed");
+      setError("email", { type: "manual", message: "Invalid credentials" });
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signGoogle();
+      toast.success("Google signed in successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message || "Google sign-in failed");
     }
   };
 
@@ -43,17 +44,16 @@ const SignIn = () => {
     <div className="flex items-center justify-center py-6 md:py-10 lg:py-16">
       <div className="lg:w-full lg:max-w-6xl flex flex-col-reverse lg:flex-row-reverse bg-white rounded-lg overflow-hidden shadow-lg">
         {/* Lottie Animation Section */}
-        <div className="w-full lg:w-1/2 flex justify-center items-center p-6 lg:p-10 bg-green-500 bg-opacity-5">
+        <div className="w-full lg:w-1/2 flex justify-center items-center p-6 lg:p-10 bg-blue-500 bg-opacity-5">
           <Lottie
             animationData={signup_Animation}
             className="w-full h-full max-h-[400px] md:max-h-[500px] lg:max-h-[600px]"
           />
         </div>
         {/* Form Section */}
-        <div className="w-full lg:w-1/2 p-8 bg-green-500 bg-opacity-5">
+        <div className="w-full lg:w-1/2 p-8 bg-blue-500 bg-opacity-5">
           <h2 className="text-3xl font-bold lg:mt-8 mb-2">
-            Welcome Back{" "}
-            <span className="text-green-500 text-4xl">Career Canvas!</span>
+            Welcome Back <span className="text-blue-500 text-4xl">Crafted Circle</span>
           </h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
@@ -67,7 +67,7 @@ const SignIn = () => {
                 id="email"
                 {...register("email", { required: "Email is required" })}
                 placeholder="Enter your Email"
-                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500 ${
+                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-indigo-500 ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -78,10 +78,7 @@ const SignIn = () => {
 
             {/* Password Input */}
             <div className="mb-4">
-              <label
-                className="block text-sm font-bold mb-2"
-                htmlFor="password"
-              >
+              <label className="block text-sm font-bold mb-2" htmlFor="password">
                 Password
               </label>
               <input
@@ -89,7 +86,7 @@ const SignIn = () => {
                 id="password"
                 {...register("password", { required: "Password is required" })}
                 placeholder="Enter your Password"
-                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500 ${
+                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-indigo-500 ${
                   errors.password ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -108,9 +105,18 @@ const SignIn = () => {
               </button>
             </div>
 
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="w-full mt-4 flex items-center justify-center border-blue-500 shadow-md hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded-lg "
+            >
+              <FaGoogle className="mr-2" />
+              Sign Up with Google
+            </button>
+
             {/* Signup Link */}
             <div className="mt-6 flex justify-center items-center mb-3">
-              <p className="font-bold pb-4 text-center mt-3">
+              <span className="font-bold pb-4 text-center mt-3">
                 Don&apos;t have an account?
                 <Link
                   to="/signup"
@@ -118,7 +124,7 @@ const SignIn = () => {
                 >
                   Sign Up
                 </Link>
-              </p>
+              </span>
             </div>
           </form>
         </div>

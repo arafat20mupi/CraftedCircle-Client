@@ -1,48 +1,57 @@
 import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
-//import { useAuth } from "../../Context/authContext";
 import { useForm } from "react-hook-form";
-
 import { FaGoogle } from "react-icons/fa6";
-import "react-toastify/dist/ReactToastify.css";
 import signup_Animation from "../../../public/Animation.json";
-import { auth } from "../../provider/AuthProvider";
-import { createUserWithEmailAndPassword } from "firebase/auth"; // Correct Firebase import
 import toast from "react-hot-toast";
+import { useContext } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const SignUp = () => {
+  const { createUser, updateProfileData, signGoogle } = useContext(AuthContext);
   const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const watchedPassword = watch("password");
 
-  // Handle form submission and create user with Firebase
-  const onSubmit = async (data) => {
-    const { email, password } = data;
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      toast.success("User Created Successfully!");
-      navigate("/signin");
-    } catch (error) {
-      toast.error(error.message);
+  const onSubmit = (data) => {
+    const { name, email, password } = data;
+
+    if (password.length < 6) {
+      toast.error('Password should contain at least six characters!');
+      return;
     }
+
+    createUser(email, password)
+      .then(() => {
+        updateProfileData(name);
+        toast.success('Sign up successful!');
+        navigate('/');
+      })
+      .catch((error) => {
+        toast.error('Error during sign-up: ' + error.message);
+      });
   };
 
   const handleGoogleSignUp = () => {
-    toast.info("Google Sign Up is currently under construction!");
-    navigate("/");
+    signGoogle()
+      .then(() => {
+        toast.success('Google Sign-Up successful!');
+        navigate('/');
+      })
+      .catch(() => {
+        toast.error('Error signing up with Google.');
+      });
   };
 
   return (
     <div className="flex items-center justify-center py-6 md:py-10 lg:py-16">
       <div className="lg:w-full lg:max-w-6xl flex flex-col-reverse lg:flex-row-reverse bg-white rounded-lg overflow-hidden shadow-lg">
         {/* Form Section */}
-        <div className="w-full lg:w-1/2 p-8 bg-green-500 bg-opacity-5">
+        <div className="w-full lg:w-1/2 p-8 bg-blue-500 bg-opacity-5">
           <h2 className="text-3xl font-bold lg:mt-8 mb-2">
-            Welcome To <span className="text-green-500 text-4xl">Career Canvas!</span>
+            Welcome To <span className="text-blue-500 text-4xl">Crafted Circle</span>
           </h2>
-          <p className="text-lg font-semibold">
-            The faster you Sign Up, the faster you can build your resume.
-          </p>
+          <p className="text-lg font-semibold">The faster you Sign Up</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
             <div className="mb-4">
@@ -52,7 +61,7 @@ const SignUp = () => {
                 id="name"
                 {...register("name", { required: "Name is required" })}
                 placeholder="Enter your Name"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
+                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
               />
               {errors.name && <p className="text-red-500">{errors.name.message}</p>}
             </div>
@@ -64,7 +73,7 @@ const SignUp = () => {
                 id="email"
                 {...register("email", { required: "Email is required" })}
                 placeholder="Enter your Email"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
+                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
               />
               {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </div>
@@ -86,7 +95,7 @@ const SignUp = () => {
                   },
                 })}
                 placeholder="Enter your Password"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
+                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
               />
               {errors.password && <p className="text-red-500">{errors.password.message}</p>}
             </div>
@@ -101,14 +110,14 @@ const SignUp = () => {
                   validate: (value) => value === watchedPassword || "Passwords do not match",
                 })}
                 placeholder="Confirm Password"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
+                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
               />
               {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
             </div>
 
             <button
               type="submit"
-              className="w-full text-black font-bold py-2 px-4 rounded-lg border border-green-500 shadow-md hover:bg-green-500 hover:text-white"
+              className="w-full text-black font-bold py-2 px-4 rounded-lg border border-blue-500 shadow-md hover:bg-blue-500 hover:text-white"
             >
               Sign Up
             </button>
@@ -116,21 +125,21 @@ const SignUp = () => {
             <button
               type="button"
               onClick={handleGoogleSignUp}
-              className="w-full mt-4 flex items-center justify-center bg-red-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-red-600"
+              className="w-full mt-4 flex items-center justify-center border-blue-500 shadow-md hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded-lg "
             >
-              <FaGoogle icon={FaGoogle} className="mr-2" />
+              <FaGoogle className="mr-2" />
               Sign Up with Google
             </button>
 
             <p className="mt-6 text-center font-bold">
               Already have an account?{" "}
-              <Link to="/signin" className="font-bold text-green-500">Sign In</Link>
+              <Link to="/signin" className="font-bold text-blue-500">Sign In</Link>
             </p>
           </form>
         </div>
 
         {/* Lottie Animation Section */}
-        <div className="w-full lg:w-1/2 flex justify-center items-center p-6 lg:p-10 bg-green-500 bg-opacity-5">
+        <div className="w-full lg:w-1/2 flex justify-center items-center p-6 lg:p-10 bg-blue-500 bg-opacity-5">
           <Lottie
             animationData={signup_Animation}
             className="w-full h-full max-h-[400px] md:max-h-[500px] lg:max-h-[600px]"
