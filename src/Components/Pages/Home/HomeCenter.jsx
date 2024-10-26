@@ -7,7 +7,7 @@ import { IoMdPhotos } from "react-icons/io";
 import Video from "../Video/Video";
 const HomeCenter = () => {
   return (
-    <div className="">
+    <div className="select-none">
       <div className="bg-white w-full px-5 py-3 shadow-md rounded-md">
         <div className="flex items-center justify-center">
           <img
