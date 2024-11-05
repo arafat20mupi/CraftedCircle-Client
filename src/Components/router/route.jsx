@@ -8,7 +8,7 @@ import Video from "../Pages/Video/Video";
 import Signin from "../Signin/Signin";
 import Profile from "../Pages/Profile/Profile";
 import SignUp from "../signup/Signup";
-
+import user from '../../provider/AuthProvider'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <Profile />,
       },
-      
+
     ],
   },
 ]);

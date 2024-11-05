@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { GrHomeRounded } from "react-icons/gr";
 import { FaLandmark } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
+import { IoMdChatboxes } from "react-icons/io";
 import { MdGroups2, MdOutlineVideoLibrary } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { AiFillRobot } from "react-icons/ai";
