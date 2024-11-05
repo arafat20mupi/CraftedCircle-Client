@@ -5,10 +5,9 @@ import Home from "../Pages/Home/Home";
 import Groups from "../Pages/Groups/Groups";
 import MerketPlace from "../Pages/MerketPlace/MerketPlace";
 import Video from "../Pages/Video/Video";
-import Signin from "../Signin/Signin";
+import Signin from "../signin/Signin";
 import Profile from "../Pages/Profile/Profile";
 import SignUp from "../signup/Signup";
-import user from '../../provider/AuthProvider'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,16 +17,9 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home></Home>,
       },
+
       {
-        path: "/signin",
-        element: <Signin></Signin>,
-      },
-      {
-        path: "/signup",
-        element: <SignUp></SignUp>,
-      },
-      {
-        path: "/craftrdAi",
+        path: "/craftedAi",
         element: <CraftedAi></CraftedAi>,
       },
       {
@@ -48,6 +40,14 @@ const router = createBrowserRouter([
       },
 
     ],
+  },
+  {
+    path: "/signin",
+    element: <Signin></Signin>,
+  },
+  {
+    path: "/signup",
+    element: <SignUp></SignUp>,
   },
 ]);
 

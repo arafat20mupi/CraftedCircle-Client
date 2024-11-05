@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const updateProfileData = async (name,) => {
+    const updateProfileData = async (name) => {
         try {
             setLoading(true);
             await updateProfile(auth.currentUser, { displayName: name});

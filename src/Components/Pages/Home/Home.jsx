@@ -1,4 +1,3 @@
-import React from "react";
 import HomeCenter from "./HomeCenter";
 import videoIcon from "../../../assets/Icons/zoom.png";
 import ShopIcon from "../../../assets/Icons/shop.png";
@@ -6,8 +5,11 @@ import GroupIcon from "../../../assets/Icons/people.png";
 import RobotIcon from "../../../assets/Icons/robot.png";
 import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
+import useAuth from "../../../Hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const Home = () => {
+  const user = useAuth()
   const users = [
     {
       id: 1,
@@ -78,30 +80,30 @@ const Home = () => {
       <div className="flex flex-col md:flex-row mx-5 justify-center gap-5">
         <div className="hidden md:block w-1/4 sticky start-0 h-screen bg-white rounded-lg shadow-md">
           <ul className="m-5 flex flex-col space-y-5 select-none">
-            <li className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
+            <Link to='/profile' className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
               <img
                 src={profile_pic}
                 alt="Profile"
                 className="w-12 mx-1 ring-1 ring-black rounded-full"
               />
-              Abdullah Al Nirob
-            </li>
-            <li className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
+             {user.displayName}
+            </Link>
+            <Link to='/video' className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
               <img src={videoIcon} alt="" className="mx-2 w-10" />
               Video
-            </li>
-            <li className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
+            </Link>
+            <Link to='/merketPlace' className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
               <img src={ShopIcon} alt="" className="mx-2 w-8" />
               Shop
-            </li>
-            <li className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
+            </Link>
+            <Link to='/group' className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
               <img src={GroupIcon} alt="" className="mx-2 w-8" />
               Group
-            </li>
-            <li className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
+            </Link>
+            <Link to='/craftedAi' className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
               <img src={RobotIcon} alt="" className="mx-2 w-8" />
               Chat Bot
-            </li>
+            </Link>
           </ul>
         </div>
         <div className="md:w-2/4">
@@ -110,9 +112,9 @@ const Home = () => {
         <div className="hidden md:block w-1/4 h-screen bg-white rounded-lg shadow-md">
           <ul className="h-[70vh] overflow-y-scroll">
             <li className="mx-6 text-2xl font-bold mt-2">Friends</li>
-            {users.map((user) => {
+            {users.map((user , index) => {
               return (
-                <div className="mb-4 mt-2">
+                <div key={index} className="mb-4 mt-2">
                   <li className="flex items-center gap-2 mx-5 p-2 hover:bg-[#eeeeee] duration-200 rounded-md">
                     <div>
                     <img src={user.img} className="rounded-full w-10" />
