@@ -3,7 +3,7 @@ import NavBar from "./Components/Share/NavBar";
 import Footer from "./Components/Share/Footer";
 import { AuthContext } from "./provider/AuthProvider";
 import { useContext } from "react";
-import SignIn from "./Components/Signin/Signin";
+import SignIn from "./Components/signin/Signin";
 
 const App = () => {
   const { user } = useContext(AuthContext)

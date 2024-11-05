@@ -1,7 +1,7 @@
 const MerketPlace = () => {
     return (
         <div>
-            
+           merketPlace 
         </div>
     );
 };

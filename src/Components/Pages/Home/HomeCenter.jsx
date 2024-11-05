@@ -4,10 +4,24 @@ import { MdOutlineEmojiEmotions } from "react-icons/md";
 
 import { IoMdPhotos } from "react-icons/io";
 import Video from "../Video/Video";
+import { useContext } from "react";
+import { AuthContext } from "../../../provider/AuthProvider";
 const HomeCenter = () => {
-  let name = "Abdullah Al Nirob";
-  let img =
-    "https://media.istockphoto.com/id/1443562748/photo/cute-ginger-cat.jpg?s=612x612&w=0&k=20&c=vvM97wWz-hMj7DLzfpYRmY2VswTqcFEKkC437hxm3Cg=";
+  const { user } = useContext(AuthContext)
+  console.log(user);
+  const userData = {
+    name: user.displayName,
+    img: user.photoURL,
+    email: user.email,
+    userId: user.uid
+  }
+  const handleClick = (e) => {
+    e.preventDefault();
+    const videoElement = document.getElementById("my_video_3");
+    videoElement.play();
+  };
+
+ 
   return (
     <div className="select-none">
       <dialog id="my_modal_3" className="modal">
@@ -19,11 +33,11 @@ const HomeCenter = () => {
           </form>
           <div className="flex items-center">
             <img
-              src={img}
-              alt=""
+              src={userData?.img}
+              alt="Profile"
               className="w-10 ring-1 ring-gray-800 mx-1 rounded-full"
             />
-            <h3 className="font-bold text-lg">{name}</h3>
+            <h3 className="font-bold text-lg">{userData.name}</h3>
           </div>
           <div>
             <textarea
@@ -102,7 +116,7 @@ const HomeCenter = () => {
           </div>
           {/* file uploader */}
           <div>
-            <button className="btn bg-[#008080] hover:bg-[#006666] text-white w-full">
+            <button onClick={handleClick} className="btn bg-[#008080] hover:bg-[#006666] text-white w-full">
               Post
             </button>
           </div>
@@ -116,7 +130,7 @@ const HomeCenter = () => {
             className="w-10 rounded-full cursor-pointer"
           />
           <input
-           onClick={() => document.getElementById("my_modal_3").showModal()}
+            onClick={() => document.getElementById("my_modal_3").showModal()}
             type="text"
             className="mx-3 w-full outline-none border-gray-400 border-2
          px-5 py-2 rounded-full hover:bg-slate-50 active:border-gray-500"

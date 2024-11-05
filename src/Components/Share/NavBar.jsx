@@ -35,7 +35,7 @@ const NavBar = () => {
         <Link to={'/group'}><MdGroups2 className="text-black" /></Link>
       </div>
       <div className="tooltip tooltip-bottom" data-tip="CraftedAi">
-        <Link to={'/craftrdAi'}><AiFillRobot className="text-black" /></Link>
+        <Link to={'/craftedAi'}><AiFillRobot className="text-black" /></Link>
       </div>
     </>
   );
@@ -68,9 +68,9 @@ const NavBar = () => {
         {/* User Profile or SignUp */}
         <div className="col-span-1 flex items-center justify-self-end">
           <div className="bg-gray-200 rounded-full cursor-pointer active:scale-95 duration-150 p-2 mx-3">
-          <IoMdChatboxes className="text-3xl"/>
+            <IoMdChatboxes className="text-3xl" />
           </div>
-          {user ? (
+          {user && (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
@@ -81,13 +81,11 @@ const NavBar = () => {
                 </div>
               </div>
               <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                <li><a className="justify-between">Profile</a></li>
+                <li><Link to={'/profile'} className="justify-between">Profile</Link></li>
                 <li><a>Settings</a></li>
                 <li><button onClick={handleLogout}>Logout</button></li>
               </ul>
             </div>
-          ) : (
-            <Link className="btn bg-[#008080] hover:bg-[#006666] text-white" to="/signup">SignUp</Link>
           )}
         </div>
       </div>

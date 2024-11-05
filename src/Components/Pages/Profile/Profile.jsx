@@ -1,4 +1,3 @@
-import React from "react";
 import { MdVerified } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import { FaPlus } from "react-icons/fa";
@@ -8,7 +7,9 @@ import { FaHome } from "react-icons/fa";
 import { HiOfficeBuilding } from "react-icons/hi";
 import { IoEarthOutline } from "react-icons/io5";
 import Video from "../Video/Video";
+import useAuth from "../../../Hooks/useAuth";
 const Profile = () => {
+  const user = useAuth();
   let profile_pic =
     "https://media.istockphoto.com/id/1443562748/photo/cute-ginger-cat.jpg?s=612x612&w=0&k=20&c=vvM97wWz-hMj7DLzfpYRmY2VswTqcFEKkC437hxm3Cg=";
 
@@ -24,12 +25,12 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row items-center gap-2">
           <img
             src={profile_pic}
-            alt=""
+            alt="Profile"
             className="w-[100px] h-[100px] md:w-[140px] md:h-[140px] rounded-full"
           />
           <div className="mx-3">
             <div className="flex  items-center gap-2 ">
-              <h1 className="text-gray-950 text-3xl mx-2 ">Abdulla Al Nirob</h1>
+              <h1 className="text-gray-950 text-3xl mx-2 ">{user.displayName}</h1>
               <MdVerified className="text-blue-700" />
             </div>
             <div className="flex items-center gap-2 mx-2 text-gray-950">
