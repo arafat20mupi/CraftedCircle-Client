@@ -8,6 +8,7 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { IoEarthOutline } from "react-icons/io5";
 import Video from "../Video/Video";
 import useAuth from "../../../Hooks/useAuth";
+import { Link } from "react-router-dom";
 const Profile = () => {
   const user = useAuth();
   let profile_pic =
@@ -41,9 +42,9 @@ const Profile = () => {
           </div>
         </div>
         <div className="flex my-3 items-center space-x-3">
-          <button className="bg-blue-600  flex items-center px-5 md:px-10 outline-none rounded active:scale-95 duration-150 py-3 cursor-pointer text-white">
+          <Link to={"/editProfile"} className="bg-blue-600  flex items-center px-5 md:px-10 outline-none rounded active:scale-95 duration-150 py-3 cursor-pointer text-white">
             <FaPen className="mx-2" /> Edit Profile
-          </button>
+          </Link>
           <button className="bg-gray-600  flex items-center px-5 md:px-10 outline-none rounded active:scale-95 duration-150 py-3 cursor-pointer text-white">
             <FaPlus className="mx-2" /> Add Story
           </button>
