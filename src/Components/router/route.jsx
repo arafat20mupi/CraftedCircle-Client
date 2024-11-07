@@ -8,6 +8,7 @@ import Video from "../Pages/Video/Video";
 import Signin from "../signin/Signin";
 import Profile from "../Pages/Profile/Profile";
 import SignUp from "../signup/Signup";
+import EditProfile from "../Pages/Profile/EditProfile/EditProfile";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -38,7 +39,10 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <Profile />,
       },
-
+      {
+        path: "/editProfile",
+        element: <EditProfile />,
+      },
     ],
   },
   {
