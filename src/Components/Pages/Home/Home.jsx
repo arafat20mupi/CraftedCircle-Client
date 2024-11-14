@@ -7,6 +7,7 @@ import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
 import useAuth from "../../../Hooks/useAuth";
 import { Link } from "react-router-dom";
+import { RiUserSearchFill } from "react-icons/ri";
 
 const Home = () => {
   const user = useAuth()
@@ -86,7 +87,7 @@ const Home = () => {
                 alt="Profile"
                 className="w-12 mx-1 ring-1 ring-black rounded-full"
               />
-             {user.displayName}
+              {user.displayName}
             </Link>
             <Link to='/video' className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
               <img src={videoIcon} alt="" className="mx-2 w-10" />
@@ -104,6 +105,11 @@ const Home = () => {
               <img src={RobotIcon} alt="" className="mx-2 w-8" />
               Chat Bot
             </Link>
+            <Link to='/jobs' className="hover:bg-[#eeeeee] duration-200 p-2 rounded-md text-xl flex items-center cursor-pointer">
+              {/* <img src={} alt="" className="mx-2 w-8" /> */}
+              <RiUserSearchFill className="mx-2 text-3xl"/>
+              Jobs
+            </Link>
           </ul>
         </div>
         <div className="md:w-2/4">
@@ -112,15 +118,15 @@ const Home = () => {
         <div className="hidden md:block w-1/4 h-screen bg-white rounded-lg shadow-md">
           <ul className="h-[70vh] overflow-y-scroll">
             <li className="mx-6 text-2xl font-bold mt-2">Friends</li>
-            {users.map((user , index) => {
+            {users.map((user, index) => {
               return (
                 <div key={index} className="mb-4 mt-2">
                   <li className="flex items-center gap-2 mx-5 p-2 hover:bg-[#eeeeee] duration-200 rounded-md">
                     <div>
-                    <img src={user.img} className="rounded-full w-10" />
-                    <div className="bg-green-500 w-3 h-3 rounded-full relative -top-3"></div>
+                      <img src={user.img} className="rounded-full w-10" />
+                      <div className="bg-green-500 w-3 h-3 rounded-full relative -top-3"></div>
                     </div>
-                    
+
                     {user.name}
                   </li>
                 </div>

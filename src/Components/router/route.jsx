@@ -9,6 +9,9 @@ import Signin from "../signin/Signin";
 import Profile from "../Pages/Profile/Profile";
 import SignUp from "../signup/Signup";
 import EditProfile from "../Pages/Profile/EditProfile/EditProfile";
+import Animation from "../Pages/Animation/Animation";
+import JobsSection from "../Pages/JobPost/JobsSection";
+import JobPosting from "../Pages/JobPost/JobPost";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,6 +45,18 @@ const router = createBrowserRouter([
       {
         path: "/editProfile",
         element: <EditProfile />,
+      },
+      {
+        path: "/animation",
+        element: <Animation />,
+      },
+      {
+        path: "/jobs",
+        element: <JobsSection />,
+      },
+      {
+        path: "/jobPost",
+        element: <JobPosting />,
       },
     ],
   },
