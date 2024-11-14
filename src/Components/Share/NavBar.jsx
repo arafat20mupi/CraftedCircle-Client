@@ -6,7 +6,7 @@ import { IoMdChatboxes } from "react-icons/io";
 import { MdGroups2, MdOutlineVideoLibrary } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { AiFillRobot } from "react-icons/ai";
-
+import { RiUserSearchFill } from "react-icons/ri";
 import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
 
@@ -37,6 +37,9 @@ const NavBar = () => {
       <div className="tooltip tooltip-bottom" data-tip="CraftedAi">
         <Link to={'/craftedAi'}><AiFillRobot className="text-black" /></Link>
       </div>
+      <div className="tooltip tooltip-bottom" data-tip="Jobs">
+        <Link to={'/jobs'}><RiUserSearchFill className="text-black" /></Link>
+      </div>
     </>
   );
 
@@ -61,7 +64,7 @@ const NavBar = () => {
         </div>
 
         {/* Navigation Links */}
-        <div className="hidden sm:grid grid-cols-5 gap-3 text-2xl text-slate-300 col-span-1">
+        <div className="hidden sm:grid grid-cols-6 gap-3 text-2xl text-slate-300 col-span-1">
           {links}
         </div>
 
@@ -91,7 +94,7 @@ const NavBar = () => {
       </div>
 
       {/* Responsive navigation for smaller screens */}
-      <div className="grid grid-cols-5 gap-3 sm:hidden text-2xl text-slate-300 py-2">
+      <div className="grid grid-cols-6 gap-3 sm:hidden text-2xl text-slate-300 py-2">
         {links}
       </div>
     </div>
