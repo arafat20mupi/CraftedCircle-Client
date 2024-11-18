@@ -7,6 +7,7 @@ import { AuthContext } from "../../../provider/AuthProvider";
 import axios from "axios";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
+import Video from "../Video/Video";
 
 const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
@@ -107,7 +108,8 @@ const HomeCenter = () => {
 
 
   return (
-    <div className="select-none">
+   <div>
+     <div className="select-none">
       {/* Modal */}
       <dialog open={isModalOpen} className="modal">
         <div className="modal-box">
@@ -267,6 +269,10 @@ const HomeCenter = () => {
         </div>
       </div>
     </div>
+    <div>
+      <Video></Video>
+    </div>
+   </div>
   );
 };
 
