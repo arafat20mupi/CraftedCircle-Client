@@ -7,7 +7,7 @@ import SignIn from "./Components/signin/Signin";
 
 const App = () => {
   const { user } = useContext(AuthContext)
-  console.log(user)
+  // console.log(user)
   return (
     <div className="bg-gray-100">
       {
