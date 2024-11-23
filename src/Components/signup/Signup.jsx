@@ -12,7 +12,6 @@ const SignUp = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const watchedPassword = watch("password");
-
   const onSubmit = (data) => {
     const { name, email, password } = data;
 
@@ -35,8 +34,10 @@ const SignUp = () => {
   const handleGoogleSignUp = () => {
     signGoogle()
       .then(() => {
+        //todo: post hoba user data 
         toast.success('Google Sign-Up successful!');
         navigate('/');
+        
       })
       .catch(() => {
         toast.error('Error signing up with Google.');
