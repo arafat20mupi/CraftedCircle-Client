@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
-
+console.log(user);
   const [isFocused, setIsFocused] = useState(false);
 
   const handleLogout = () => {
