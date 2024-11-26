@@ -75,7 +75,10 @@ const EditProfile = () => {
         <div>
           <label className="block text-gray-700">Name</label>
           <input
-            {...register("name", { required: "Name is required", maxLength: 50 })}
+            {...register("name", {
+              required: "Name is required",
+              maxLength: 50,
+            })}
             className="border rounded-md p-2 w-full"
             placeholder="Name"
           />
@@ -95,6 +98,47 @@ const EditProfile = () => {
             <p className="text-red-500">{errors.email.message}</p>
           )}
         </div>
+
+        {/* Location */}
+        <div>
+          <label className="block text-gray-700">Loaction</label>
+          <input
+            {...register("location")}
+            className="border rounded-md p-2 w-full"
+            placeholder="Location"
+          />
+          {errors.location && (
+            <p className="text-red-500">{errors.location.message}</p>
+          )}
+        </div>
+
+         {/* Education */}
+         <div>
+          <label className="block text-gray-700">Education</label>
+          <input
+            {...register("education")}
+            className="border rounded-md p-2 w-full"
+            placeholder="education"
+          />
+          {errors.education && (
+            <p className="text-red-500">{errors.education.message}</p>
+          )}
+        </div>
+        
+
+          {/* Work */}
+          <div>
+          <label className="block text-gray-700">Work</label>
+          <input
+            {...register("work")}
+            className="border rounded-md p-2 w-full"
+            placeholder="work"
+          />
+          {errors.work && (
+            <p className="text-red-500">{errors.work.message}</p>
+          )}
+        </div>
+        
 
         {/* Save Button */}
         <button
@@ -121,7 +165,6 @@ const EditProfile = () => {
               <div className="w-full h-[250px] bg-gray-200" />
             )}
 
-
             {profileImgPreview ? (
               <img
                 src={profileImgPreview}
@@ -134,9 +177,18 @@ const EditProfile = () => {
           </div>
 
 
-          <p><strong>Name:</strong> {formWatch.name || "Not Provided"}</p>
+          <p>
+            <strong>Name:</strong> {formWatch.name || "Not Provided"}
+          </p>
 
-          <p><strong>Email:</strong> {formWatch.email || "Not Provided"}</p>
+          <p>
+            <strong>Email:</strong> {formWatch.email || "Not Provided"}
+          </p>
+
+          <p>
+            <strong>Location:</strong> {formWatch.location || "Not Provided"}
+          </p>
+
         </div>
       </div>
     </div>

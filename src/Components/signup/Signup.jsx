@@ -10,37 +10,49 @@ import { AuthContext } from "../../provider/AuthProvider";
 const SignUp = () => {
   const { createUser, updateProfileData, signGoogle } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
   const watchedPassword = watch("password");
   const onSubmit = (data) => {
     const { name, email, password } = data;
 
     if (password.length < 6) {
-      toast.error('Password should contain at least six characters!');
+      toast.error("Password should contain at least 6 characters!");
       return;
     }
 
     createUser(email, password)
-      .then(() => {
+      .then((user) => {
+        console.log(user.user);
         updateProfileData(name);
-        toast.success('Sign up successful!');
-        navigate('/');
+        const userInfo = {
+          name: name,
+          email: email,
+          uid: user.user.uid,
+        };
+        console.log(userInfo);
+        toast.success("Sign up successful!");
+        navigate("/");
       })
       .catch((error) => {
-        toast.error('Error during sign-up: ' + error.message);
+        toast.error("Error during sign-up: " + error.message);
       });
   };
 
   const handleGoogleSignUp = () => {
     signGoogle()
       .then(() => {
-        //todo: post hoba user data 
-        toast.success('Google Sign-Up successful!');
-        navigate('/');
-        
+
+        toast.success("Google Sign-Up successful!");
+        navigate("/");
+
       })
       .catch(() => {
-        toast.error('Error signing up with Google.');
+        toast.error("Error signing up with Google.");
       });
   };
 
@@ -50,13 +62,16 @@ const SignUp = () => {
         {/* Form Section */}
         <div className="w-full lg:w-1/2 p-8 bg-blue-500 bg-opacity-5">
           <h2 className="text-3xl font-bold lg:mt-8 mb-2">
-            Welcome To <span className="text-blue-500 text-4xl">Crafted Circle</span>
+            Welcome To{" "}
+            <span className="text-blue-500 text-4xl">Crafted Circle</span>
           </h2>
           <p className="text-lg font-semibold">The faster you Sign Up</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
             <div className="mb-4">
-              <label className="block text-sm font-bold mb-2" htmlFor="name">Name</label>
+              <label className="block text-sm font-bold mb-2" htmlFor="name">
+                Name
+              </label>
               <input
                 type="text"
                 id="name"
@@ -64,11 +79,15 @@ const SignUp = () => {
                 placeholder="Enter your Name"
                 className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
               />
-              {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+              {errors.name && (
+                <p className="text-red-500">{errors.name.message}</p>
+              )}
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-bold mb-2" htmlFor="email">Email</label>
+              <label className="block text-sm font-bold mb-2" htmlFor="email">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -76,11 +95,18 @@ const SignUp = () => {
                 placeholder="Enter your Email"
                 className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
               />
-              {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-500">{errors.email.message}</p>
+              )}
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-bold mb-2" htmlFor="password">Password</label>
+              <label
+                className="block text-sm font-bold mb-2"
+                htmlFor="password"
+              >
+                Password
+              </label>
               <input
                 type="password"
                 id="password"
@@ -92,28 +118,39 @@ const SignUp = () => {
                   },
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-                    message: "Password must contain at least 6 characters, one letter, and one number",
+                    message:
+                      "Password must contain at least 6 characters, one letter, and one number",
                   },
                 })}
                 placeholder="Enter your Password"
                 className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
               />
-              {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+              {errors.password && (
+                <p className="text-red-500">{errors.password.message}</p>
+              )}
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-bold mb-2" htmlFor="confirmPassword">Confirm Password</label>
+              <label
+                className="block text-sm font-bold mb-2"
+                htmlFor="confirmPassword"
+              >
+                Confirm Password
+              </label>
               <input
                 type="password"
                 id="confirmPassword"
                 {...register("confirmPassword", {
                   required: "Confirm Password is required",
-                  validate: (value) => value === watchedPassword || "Passwords do not match",
+                  validate: (value) =>
+                    value === watchedPassword || "Passwords do not match",
                 })}
                 placeholder="Confirm Password"
                 className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
               />
-              {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
+              {errors.confirmPassword && (
+                <p className="text-red-500">{errors.confirmPassword.message}</p>
+              )}
             </div>
 
             <button
@@ -134,7 +171,9 @@ const SignUp = () => {
 
             <p className="mt-6 text-center font-bold">
               Already have an account?{" "}
-              <Link to="/signin" className="font-bold text-blue-500">Sign In</Link>
+              <Link to="/signin" className="font-bold text-blue-500">
+                Sign In
+              </Link>
             </p>
           </form>
         </div>

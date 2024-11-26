@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 const SignIn = () => {
   const navigate = useNavigate();
   const { signIn, signGoogle } = useContext(AuthContext);
+  
   const {
     register,
     handleSubmit,
