@@ -6,10 +6,13 @@ import signup_Animation from "../../../public/Animation.json";
 import toast from "react-hot-toast";
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
+import { imageUpload } from "../../Hooks/imageUpload";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const SignUp = () => {
   const { createUser, updateProfileData, signGoogle } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axios = useAxiosPublic()
   const {
     register,
     handleSubmit,
@@ -17,31 +20,39 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
   const watchedPassword = watch("password");
-  const onSubmit = (data) => {
-    const { name, email, password } = data;
+  const onSubmit = async (data) => {
+    const { name, email, password, photo } = data;
 
     if (password.length < 6) {
       toast.error("Password should contain at least 6 characters!");
       return;
     }
 
-    createUser(email, password)
-      .then((user) => {
-        console.log(user.user);
-        updateProfileData(name);
-        const userInfo = {
-          name: name,
-          email: email,
-          uid: user.user.uid,
-        };
-        console.log(userInfo);
-        toast.success("Sign up successful!");
-        navigate("/");
-      })
-      .catch((error) => {
-        toast.error("Error during sign-up: " + error.message);
-      });
+    try {
+      const img = await imageUpload(photo);
+      const userCredential = await createUser(email, password);
+
+      await updateProfileData(name, img);
+
+      const userInfo = {
+        name,
+        email,
+        uid: userCredential.user.uid,
+        profileImg: img,
+        password
+      };
+
+      const response = await axios.post("/api/Users", userInfo);
+      console.log("User registered:", response.data);
+
+      toast.success("Sign up successful!");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error during sign-up: " + (error.response?.data?.message || error.message));
+    }
   };
+
 
   const handleGoogleSignUp = () => {
     signGoogle()
@@ -97,6 +108,22 @@ const SignUp = () => {
               />
               {errors.email && (
                 <p className="text-red-500">{errors.email.message}</p>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-bold mb-2" htmlFor="name">
+                Your Photo
+              </label>
+              <input
+                type="file"
+                id="photo"
+                {...register("photo", { required: "Photo is required" })}
+
+                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+              />
+              {errors.photo && (
+                <p className="text-red-500">{errors.photo.message}</p>
               )}
             </div>
 

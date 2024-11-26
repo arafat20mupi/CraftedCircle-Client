@@ -18,10 +18,10 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const updateProfileData = async (name) => {
+    const updateProfileData = async (name, img) => {
         try {
             setLoading(true);
-            await updateProfile(auth.currentUser, { displayName: name});
+            await updateProfile(auth.currentUser, { displayName: name } ,{ photoURL : img});
         } catch (error) {
             console.error("Error updating profile:", error);
         } finally {
