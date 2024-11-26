@@ -66,7 +66,10 @@ const EditProfile = () => {
         <div>
           <label className="block text-gray-700">Name</label>
           <input
-            {...register("name", { required: "Name is required", maxLength: 50 })}
+            {...register("name", {
+              required: "Name is required",
+              maxLength: 50,
+            })}
             className="border rounded-md p-2 w-full"
             placeholder="Name"
           />
@@ -87,6 +90,47 @@ const EditProfile = () => {
           )}
         </div>
 
+        {/* Location */}
+        <div>
+          <label className="block text-gray-700">Loaction</label>
+          <input
+            {...register("location")}
+            className="border rounded-md p-2 w-full"
+            placeholder="Location"
+          />
+          {errors.location && (
+            <p className="text-red-500">{errors.location.message}</p>
+          )}
+        </div>
+
+         {/* Education */}
+         <div>
+          <label className="block text-gray-700">Education</label>
+          <input
+            {...register("education")}
+            className="border rounded-md p-2 w-full"
+            placeholder="education"
+          />
+          {errors.education && (
+            <p className="text-red-500">{errors.education.message}</p>
+          )}
+        </div>
+        
+
+          {/* Work */}
+          <div>
+          <label className="block text-gray-700">Work</label>
+          <input
+            {...register("work")}
+            className="border rounded-md p-2 w-full"
+            placeholder="work"
+          />
+          {errors.work && (
+            <p className="text-red-500">{errors.work.message}</p>
+          )}
+        </div>
+        
+
         {/* Save Button */}
         <button
           type="submit"
@@ -100,7 +144,6 @@ const EditProfile = () => {
       <div className="w-full lg:w-1/2 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold text-center mb-4">Live Preview</h2>
         <div className="space-y-4">
-          
           <div className="relative h-[320px]">
             {coverImgPreview ? (
               <img
@@ -112,7 +155,6 @@ const EditProfile = () => {
               <div className="w-full h-[250px] bg-gray-200" />
             )}
 
-          
             {profileImgPreview ? (
               <img
                 src={profileImgPreview}
@@ -124,10 +166,17 @@ const EditProfile = () => {
             )}
           </div>
 
-         
-          <p><strong>Name:</strong> {formWatch.name || "Not Provided"}</p>
-          
-          <p><strong>Email:</strong> {formWatch.email || "Not Provided"}</p>
+          <p>
+            <strong>Name:</strong> {formWatch.name || "Not Provided"}
+          </p>
+
+          <p>
+            <strong>Email:</strong> {formWatch.email || "Not Provided"}
+          </p>
+
+          <p>
+            <strong>Location:</strong> {formWatch.location || "Not Provided"}
+          </p>
         </div>
       </div>
     </div>
