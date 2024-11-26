@@ -17,7 +17,6 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
   const watchedPassword = watch("password");
-
   const onSubmit = (data) => {
     const { name, email, password } = data;
 
@@ -47,8 +46,10 @@ const SignUp = () => {
   const handleGoogleSignUp = () => {
     signGoogle()
       .then(() => {
+
         toast.success("Google Sign-Up successful!");
         navigate("/");
+
       })
       .catch(() => {
         toast.error("Error signing up with Google.");

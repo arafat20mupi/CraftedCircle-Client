@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { imageUpload } from "../../../../Hooks/imageUpload";
 
 const EditProfile = () => {
   const {
@@ -12,7 +13,15 @@ const EditProfile = () => {
   const [coverImgPreview, setCoverImgPreview] = useState("");
 
   const onSubmit = (data) => {
-    console.log("Form Submitted Data:", data);
+    const profileImg= imageUpload(data.profileImg)
+    const coverImg= imageUpload(data.coverImg)
+    const link = {
+      github,
+      portfolio,
+      linkedin
+    }
+
+
   };
 
   const formWatch = watch();
@@ -144,6 +153,7 @@ const EditProfile = () => {
       <div className="w-full lg:w-1/2 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold text-center mb-4">Live Preview</h2>
         <div className="space-y-4">
+
           <div className="relative h-[320px]">
             {coverImgPreview ? (
               <img
@@ -166,6 +176,7 @@ const EditProfile = () => {
             )}
           </div>
 
+
           <p>
             <strong>Name:</strong> {formWatch.name || "Not Provided"}
           </p>
@@ -177,6 +188,7 @@ const EditProfile = () => {
           <p>
             <strong>Location:</strong> {formWatch.location || "Not Provided"}
           </p>
+
         </div>
       </div>
     </div>
