@@ -9,6 +9,7 @@ const App = () => {
   const { user } = useContext(AuthContext)
   // console.log(user)
   return (
+   
     <div className="bg-gray-100">
       {
         user ? (

@@ -9,7 +9,8 @@ const EditProfile = () => {
   const axios = useAxiosPublic();
   const [profileImgPreview, setProfileImgPreview] = useState("");
   const [coverImgPreview, setCoverImgPreview] = useState("");
-  const [mainData , setMainData] = useState();
+  const [mainData, setMainData] = useState();
+  const [selectedEducation, setSelectedEducation] = useState();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -22,7 +23,10 @@ const EditProfile = () => {
         console.log("User Data:", response.data);
         setMainData(response.data);
       } catch (error) {
-        console.error("Error fetching user data:", error.response?.data || error.message);
+        console.error(
+          "Error fetching user data:",
+          error.response?.data || error.message
+        );
       }
     };
     fetchUserData();
@@ -46,8 +50,8 @@ const EditProfile = () => {
       intro: data.intro,
       location: data.location,
       work: data.work.split(","),
-      // Todo : Education a costomize kora lagba 
-      education: data.education.split(","), 
+      // Todo : Education a costomize kora lagba
+      education: data.education.split(","),
       skill: data.skill.split(","),
       contactNum: data.contactNum,
       uid: email,
@@ -64,7 +68,10 @@ const EditProfile = () => {
       const response = await axios.put(`/api/users/${mainData._id}`, finalData);
       console.log("Profile Updated:", response.data);
     } catch (error) {
-      console.error("Error updating profile:", error.response?.data || error.message);
+      console.error(
+        "Error updating profile:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -77,37 +84,51 @@ const EditProfile = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full lg:w-1/2 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md space-y-4"
       >
-        <h2 className="text-3xl font-bold text-center mb-4">Edit Profile</h2>
+        <h2 className="text-3xl font-bold text-center mb-4 ">Edit Profile</h2>
 
         {/* Profile Image */}
         <div>
-          <label className="block text-gray-700">Profile Image</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            Profile Image
+          </label>
           <input
-            {...register("profileImg", { required: "Profile image is required" })}
+            {...register("profileImg", {
+              required: "Profile image is required",
+            })}
             type="file"
             accept="image/*"
             className="border rounded-md p-2 w-full"
-            onChange={(e) => setProfileImgPreview(URL.createObjectURL(e.target.files[0]))}
+            onChange={(e) =>
+              setProfileImgPreview(URL.createObjectURL(e.target.files[0]))
+            }
           />
-          {errors.profileImg && <p className="text-red-500">{errors.profileImg.message}</p>}
+          {errors.profileImg && (
+            <p className="text-red-500">{errors.profileImg.message}</p>
+          )}
         </div>
 
         {/* Cover Image */}
         <div>
-          <label className="block text-gray-700">Cover Image</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            Cover Image
+          </label>
           <input
             {...register("coverImg", { required: "Cover image is required" })}
             type="file"
             accept="image/*"
             className="border rounded-md p-2 w-full"
-            onChange={(e) => setCoverImgPreview(URL.createObjectURL(e.target.files[0]))}
+            onChange={(e) =>
+              setCoverImgPreview(URL.createObjectURL(e.target.files[0]))
+            }
           />
-          {errors.coverImg && <p className="text-red-500">{errors.coverImg.message}</p>}
+          {errors.coverImg && (
+            <p className="text-red-500">{errors.coverImg.message}</p>
+          )}
         </div>
 
         {/* Name */}
         <div>
-          <label className="block text-gray-700">Name</label>
+          <label className="block text-gray-700 font-bold text-xl">Name</label>
           <input
             {...register("name", { required: "Name is required" })}
             className="border rounded-md p-2 w-full"
@@ -118,18 +139,24 @@ const EditProfile = () => {
 
         {/* Intro */}
         <div>
-          <label className="block text-gray-700">Your Intro</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            Your Intro
+          </label>
           <input
             {...register("intro", { required: "Intro is required" })}
             className="border rounded-md p-2 w-full"
             placeholder="Short Intro"
           />
-          {errors.intro && <p className="text-red-500">{errors.intro.message}</p>}
+          {errors.intro && (
+            <p className="text-red-500">{errors.intro.message}</p>
+          )}
         </div>
 
         {/* Location */}
         <div>
-          <label className="block text-gray-700">Location</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            Location
+          </label>
           <input
             {...register("location")}
             className="border rounded-md p-2 w-full"
@@ -139,17 +166,40 @@ const EditProfile = () => {
 
         {/* Education */}
         <div>
-          <label className="block text-gray-700">Education (Comma Separated)</label>
-          <input
+          <h1 className="font-bold text-xl">Education</h1>
+          <label className="block text-gray-700 mb-2">Educational Level</label>
+          <select
             {...register("education")}
             className="border rounded-md p-2 w-full"
-            placeholder="Education"
-          />
+            onChange={(e) => setSelectedEducation(e.target.value)} // Add a handler to capture selected value
+          >
+            <option value="">Select Education Level</option>
+            <option value="High School">High School</option>
+            <option value="College">College</option>
+            <option value="Bachelor's">Bachelors</option>
+            <option value="Master's">Masters</option>
+            <option value="Others">Others</option>
+          </select>
         </div>
+        {selectedEducation && (
+          <div className="mt-4">
+            <label className="block text-gray-700 mb-2 font-bold text-xl">
+              Institute Name
+            </label>
+            <input
+              type="text"
+              {...register("insName")}
+              placeholder="Enter you Institute Name"
+              className="border rounded-md p-2 w-full"
+            />
+          </div>
+        )}
 
         {/* Work */}
         <div>
-          <label className="block text-gray-700">Work (Comma Separated)</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            Work (Comma Separated)
+          </label>
           <input
             {...register("work")}
             className="border rounded-md p-2 w-full"
@@ -159,7 +209,9 @@ const EditProfile = () => {
 
         {/* Skills */}
         <div>
-          <label className="block text-gray-700">Skills (Comma Separated)</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            Skills (Comma Separated)
+          </label>
           <input
             {...register("skill")}
             className="border rounded-md p-2 w-full"
@@ -169,7 +221,9 @@ const EditProfile = () => {
 
         {/* Contact Number */}
         <div>
-          <label className="block text-gray-700">Contact Number</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            Contact Number
+          </label>
           <input
             {...register("contactNum")}
             type="number"
@@ -180,7 +234,9 @@ const EditProfile = () => {
 
         {/* Links */}
         <div>
-          <label className="block text-gray-700">GitHub Link</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            GitHub Link
+          </label>
           <input
             {...register("github")}
             className="border rounded-md p-2 w-full"
@@ -188,7 +244,9 @@ const EditProfile = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-700">LinkedIn Link</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            LinkedIn Link
+          </label>
           <input
             {...register("linkedin")}
             className="border rounded-md p-2 w-full"
@@ -196,7 +254,9 @@ const EditProfile = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-700">Portfolio Link</label>
+          <label className="block text-gray-700 font-bold text-xl">
+            Portfolio Link
+          </label>
           <input
             {...register("portfolio")}
             className="border rounded-md p-2 w-full"
@@ -215,7 +275,7 @@ const EditProfile = () => {
 
       {/* Preview Section */}
       <div className="w-full lg:w-1/2 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-center mb-4">Live Preview</h2>
+        <h2 className="text-3xl font-bold text-center mb-4 ">Live Preview</h2>
         <div className="space-y-4">
           <div className="relative h-[320px]">
             {coverImgPreview ? (
@@ -238,13 +298,37 @@ const EditProfile = () => {
             )}
           </div>
           <p>
-            <strong>Name:</strong> {formWatch.name || "Not Provided"}
+            <strong>Name:</strong> {formWatch.name}
           </p>
           <p>
-            <strong>Location:</strong> {formWatch.location || "Not Provided"}
+            <strong>Intro:</strong> {formWatch.intro}
           </p>
           <p>
-            <strong>Intro:</strong> {formWatch.intro || "Not Provided"}
+            <strong>Location:</strong> {formWatch.location}
+          </p>
+          <p>
+            <strong>Education:</strong> {formWatch.education}
+          </p>
+          <p>
+            <strong>Work:</strong> {formWatch.work}
+          </p>
+          <p>
+            <strong>Skills:</strong> {formWatch.skill}
+          </p>
+
+          <p>
+            <strong>Contact Number:</strong>
+            {formWatch.contactNum}
+          </p>
+          <p>
+            <strong>GitHub Link:</strong> {formWatch.github}
+          </p>
+          <p>
+            <strong>LinkedIn Link:</strong> {formWatch.linkedin}
+          </p>
+
+          <p>
+            <strong>Portfolio Link:</strong> {formWatch.portfolio}
           </p>
         </div>
       </div>

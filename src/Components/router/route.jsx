@@ -12,6 +12,7 @@ import EditProfile from "../Pages/Profile/EditProfile/EditProfile";
 import Animation from "../Pages/Animation/Animation";
 import JobsSection from "../Pages/JobPost/JobsSection";
 import JobPosting from "../Pages/JobPost/JobPost";
+import ProductDetails from "../Pages/MerketPlace/products/productDetails";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
       {
         path: "/merketPlace",
         element: <MerketPlace></MerketPlace>,
+      },
+
+      {
+        path: "/ProductDetails/:id",
+        element: <ProductDetails />,
+        loader:({params})=>fetch(`https://fakestoreapi.com/ProductDetails/${params.id}`)
+
+
       },
       {
         path: "/video",
