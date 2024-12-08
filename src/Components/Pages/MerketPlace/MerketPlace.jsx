@@ -1,7 +1,11 @@
+
+import Product from "./products/product";
+
+
 const MerketPlace = () => {
     return (
         <div>
-           merketPlace 
+           <Product />
         </div>
     );
 };
