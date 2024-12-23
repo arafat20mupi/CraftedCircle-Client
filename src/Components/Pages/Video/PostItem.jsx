@@ -5,16 +5,16 @@ import { FaComment, FaEarthAmericas, FaShareNodes } from "react-icons/fa6";
 import { GoDotFill } from "react-icons/go";
 import { MdVerified } from "react-icons/md";
 import {
-  EmailShareButton,
-  FacebookShareButton,
-  LinkedinShareButton,
   EmailIcon,
+  EmailShareButton,
   FacebookIcon,
+  FacebookShareButton,
   LinkedinIcon,
+  LinkedinShareButton,
 } from "react-share";
 
 const PostItem = ({ item }) => {
-  const { userName, userImage, title, photo, video,  } = item;
+  const { userName, userImage, title, photo, video } = item;
   const [showInput, setShowInput] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -81,11 +81,16 @@ const PostItem = ({ item }) => {
             </button>
             {showEmoji && (
               <div className="absolute top-[-53px] left-[-10px] bg-white p-2 rounded-lg shadow-md flex space-x-2">
-                {['👍','💖' ,'😊', '😂', '😍', '😎', '😭', '😡'].map((emoji, index) => (
-                  <button key={index} className="hover:translate-y-[-10px] transition-all duration-500 text-3xl">
-                    {emoji}
-                  </button>
-                ))}
+                {["👍", "💖", "😊", "😂", "😍", "😎", "😭", "😡"].map(
+                  (emoji, index) => (
+                    <button
+                      key={index}
+                      className="hover:translate-y-[-10px] transition-all duration-500 text-3xl"
+                    >
+                      {emoji}
+                    </button>
+                  )
+                )}
               </div>
             )}
           </div>
@@ -130,7 +135,9 @@ const PostItem = ({ item }) => {
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white rounded-lg shadow-lg p-6 mx-auto max-w-md animate__animated animate__fadeIn animate__faster">
               <h3 className="font-bold text-lg mb-4">Share With:</h3>
-              <p className="mb-4">Choose Your Platforms where you want to share:</p>
+              <p className="mb-4">
+                Choose Your Platforms where you want to share:
+              </p>
               <div className="flex items-center gap-4 mb-4">
                 <FacebookShareButton url={shareURL}>
                   <FacebookIcon size={40} round={true} />
