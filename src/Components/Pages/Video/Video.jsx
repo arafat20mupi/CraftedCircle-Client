@@ -1,5 +1,5 @@
-import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { useEffect, useState } from "react";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import PostItem from "./PostItem"; // Assuming PostItem is a component to render each post
 
 const Video = () => {
@@ -28,7 +28,7 @@ const Video = () => {
   console.log(post); // Log the post array to confirm it's set correctly
 
   return (
-    <div className="my-4 bg-white py-1 rounded h-[500px] overflow-y-scroll">
+    <div className="my-4 bg-white py-1 rounded h-[500px] overflow-y-scroll">    
       {post.length === 0 ? (
         <p>No posts available.</p> // Display a message when there are no posts
       ) : (

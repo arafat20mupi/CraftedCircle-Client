@@ -1,19 +1,19 @@
 /* eslint-disable react/prop-types */
+import axios from "axios";
 import { useState } from "react";
 import { AiFillLike } from "react-icons/ai";
 import { FaComment, FaEarthAmericas, FaShareNodes } from "react-icons/fa6";
 import { GoDotFill } from "react-icons/go";
 import { MdVerified } from "react-icons/md";
 import {
-  EmailShareButton,
-  FacebookShareButton,
-  LinkedinShareButton,
   EmailIcon,
+  EmailShareButton,
   FacebookIcon,
+  FacebookShareButton,
   LinkedinIcon,
+  LinkedinShareButton,
 } from "react-share";
 import useAuth from "../../../Hooks/useAuth";
-import axios from "axios";
 
 const PostItem = ({ item }) => {
   const { userName, userImage, title, photo, video, } = item;
@@ -205,7 +205,9 @@ const PostItem = ({ item }) => {
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white rounded-lg shadow-lg p-6 mx-auto max-w-md animate__animated animate__fadeIn animate__faster">
               <h3 className="font-bold text-lg mb-4">Share With:</h3>
-              <p className="mb-4">Choose Your Platforms where you want to share:</p>
+              <p className="mb-4">
+                Choose Your Platforms where you want to share:
+              </p>
               <div className="flex items-center gap-4 mb-4">
                 <FacebookShareButton url={shareURL}>
                   <FacebookIcon size={40} round={true} />
