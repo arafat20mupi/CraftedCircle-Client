@@ -12,18 +12,87 @@ import {
   FacebookIcon,
   LinkedinIcon,
 } from "react-share";
+import useAuth from "../../../Hooks/useAuth";
+import axios from "axios";
 
 const PostItem = ({ item }) => {
-  const { userName, userImage, title, photo, video,  } = item;
+  const { userName, userImage, title, photo, video, } = item;
   const [showInput, setShowInput] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const user = useAuth();
+
 
   const shareURL = `http://localhost:5173`;
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const toggleInput = () => setShowInput(!showInput);
+
+  const handleComment = e => {
+    e.preventDefault();
+    const comment = e.target.comment.value;
+    const userName = user.displayName;
+    const userImage = user.photoURL;
+    const commentData = {
+      comment,
+      userName,
+      userImage,
+      post_id: item._id,
+    };
+    axios
+      .post('http://localhost:5000/api/createcomment', commentData)
+      .then((res) => {
+        console.log('Comment created:', res.data);
+        e.target.reset(); // Clear the form input
+      })
+      .catch((err) => {
+        console.error('Error creating comment:', err.response?.data || err.message);
+      });
+
+  }
+  // const handleLike = e => {
+  //   const comment = e.target.comment.value;
+  //   const userName = user.displayName;
+  //   const userImage = user.photoURL;
+  //   const likeData = {
+  //     comment,
+  //     userName,
+  //     userImage,
+  //     post_id: item._id,
+  //   };
+  //   console.log(likeData);
+  //   axios
+  //     .post('http://localhost:5000/api/createlike', likeData)
+  //     .then((res) => {
+  //       console.log('Like created:', res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error('Error creating comment:', err.response?.data || err.message);
+  //     });
+
+  // }
+  const handleLikeEmoji = (emoji) => {
+    const userName = user.displayName;
+    const userImage = user.photoURL;
+    const likeData = {
+      userName,
+      userImage,
+      post_id: item._id,
+      like: emoji,
+    };
+  
+    axios
+      .post('http://localhost:5000/api/createlike', likeData)
+      .then((res) => {
+        console.log('Reaction created:', res.data);
+        // Optional: Update UI or state here to reflect the new reaction
+      })
+      .catch((err) => {
+        console.error('Error creating reaction:', err.response?.data || err.message);
+      });
+  };
+  
 
   return (
     <div className="mx-2 md:mx-4">
@@ -66,7 +135,6 @@ const PostItem = ({ item }) => {
             )
           )}
         </div>
-
         <hr className="mx-5 my-3" />
 
         <div className="flex px-4 justify-between items-center">
@@ -81,10 +149,14 @@ const PostItem = ({ item }) => {
             </button>
             {showEmoji && (
               <div className="absolute top-[-53px] left-[-10px] bg-white p-2 rounded-lg shadow-md flex space-x-2">
-                {['👍','💖' ,'😊', '😂', '😍', '😎', '😭', '😡'].map((emoji, index) => (
-                  <button key={index} className="hover:translate-y-[-10px] transition-all duration-500 text-3xl">
-                    {emoji}
-                  </button>
+                {['👍', '💖', '😊', '😂', '😍', '😎', '😭', '😡'].map((emoji, index) => (
+                   <button
+                   key={index}
+                   onClick={() => handleLikeEmoji(emoji)}
+                   className="hover:translate-y-[-10px] transition-all duration-500 text-3xl"
+                 >
+                   {emoji}
+                 </button>
                 ))}
               </div>
             )}
@@ -110,19 +182,22 @@ const PostItem = ({ item }) => {
 
         {showInput && (
           <div className="mt-4 px-5">
-            <div className="flex items-center border border-gray-300 rounded-3xl p-2">
-              <input
-                type="text"
-                placeholder="Write a comment..."
-                className="flex-grow p-2 outline-none"
-              />
-              <button
-                type="button"
-                className="ml-2 text-blue-500 hover:text-blue-700"
-              >
-                Send
-              </button>
-            </div>
+            <form onSubmit={handleComment}>
+              <div className="flex items-center border border-gray-300 rounded-3xl p-2">
+                <input
+                  name="comment"
+                  type="text"
+                  placeholder="Write a comment..."
+                  className="flex-grow p-2 outline-none"
+                />
+                <button
+                  type="submit"
+                  className="ml-2 text-blue-500 hover:text-blue-700"
+                >
+                  Send
+                </button>
+              </div>
+            </form>
           </div>
         )}
 
