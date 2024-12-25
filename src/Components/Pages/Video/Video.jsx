@@ -4,6 +4,8 @@ import PostItem from "./PostItem"; // Assuming PostItem is a component to render
 
 const Video = () => {
   const [post, setPost] = useState([]);
+  console.log(post)
+  
   const axiosPublic = useAxiosPublic();
 
   useEffect(() => {
