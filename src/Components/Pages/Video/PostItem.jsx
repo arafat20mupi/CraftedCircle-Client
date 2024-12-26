@@ -15,71 +15,32 @@ import {
 } from "react-share";
 import useAuth from "../../../Hooks/useAuth";
 
+
 const PostItem = ({ item }) => {
   const { userName, userImage, title, photo, video, } = item;
   const [showInput, setShowInput] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const user = useAuth();
-
-
+  
   const shareURL = `http://localhost:5173`;
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const toggleInput = () => setShowInput(!showInput);
 
-  const handleComment = e => {
-    e.preventDefault();
-    const comment = e.target.comment.value;
-    const userName = user.displayName;
-    const userImage = user.photoURL;
-    const commentData = {
-      comment,
-      userName,
-      userImage,
-      post_id: item._id,
-    };
-    axios
-      .post('http://localhost:5000/api/createcomment', commentData)
-      .then((res) => {
-        console.log('Comment created:', res.data);
-        e.target.reset(); // Clear the form input
-      })
-      .catch((err) => {
-        console.error('Error creating comment:', err.response?.data || err.message);
-      });
+  
 
-  }
-  // const handleLike = e => {
-  //   const comment = e.target.comment.value;
-  //   const userName = user.displayName;
-  //   const userImage = user.photoURL;
-  //   const likeData = {
-  //     comment,
-  //     userName,
-  //     userImage,
-  //     post_id: item._id,
-  //   };
-  //   console.log(likeData);
-  //   axios
-  //     .post('http://localhost:5000/api/createlike', likeData)
-  //     .then((res) => {
-  //       console.log('Like created:', res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.error('Error creating comment:', err.response?.data || err.message);
-  //     });
-
-  // }
-  const handleLikeEmoji = (emoji) => {
+  const handleLikeEmoji = (emoji,index) => {
+    console.log(emoji,index);
+    
     const userName = user.displayName;
     const userImage = user.photoURL;
     const likeData = {
       userName,
       userImage,
       post_id: item._id,
-      like: emoji,
+      like: index,
     };
   
     axios
@@ -92,6 +53,28 @@ const PostItem = ({ item }) => {
         console.error('Error creating reaction:', err.response?.data || err.message);
       });
   };
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    const text = e.target.comment.value; // Get comment text from the input
+    const commentEmail = user.email; // Ensure you are getting the email from the correct source
+
+    if (!text || !commentEmail) {
+        // Check if text and email are present before making the request
+        console.error("Comment text and user email are required");
+        return;
+    }
+
+    const comment = { text, commentEmail }; // Construct the comment object
+
+    try {
+        const response = await axios.put(`http://localhost:5000/api/${item?._id}/putcomment`, comment);
+        console.log(response.data);
+    } catch (error) {
+        console.error("Error adding comment:", error.response?.data?.message || error.message);
+    }
+};
+
   
 
   return (
@@ -152,7 +135,7 @@ const PostItem = ({ item }) => {
                 {['👍', '💖', '😊', '😂', '😍', '😎', '😭', '😡'].map((emoji, index) => (
                    <button
                    key={index}
-                   onClick={() => handleLikeEmoji(emoji)}
+                   onClick={() => handleLikeEmoji(emoji,index)}
                    className="hover:translate-y-[-10px] transition-all duration-500 text-3xl"
                  >
                    {emoji}
@@ -167,7 +150,47 @@ const PostItem = ({ item }) => {
             className="flex items-center space-x-2 text-slate-500 cursor-pointer text-xl hover:text-blue-500 transition-colors duration-300"
           >
             <FaComment />
-            <p>Comment</p>
+            <div>
+            {/* You can open the modal using document.getElementById('ID').showModal() method */}
+            <button className="" onClick={() => document.getElementById('my_modal_3').showModal()}>Comment</button>
+            <dialog id="my_modal_3" className="modal">
+                <div className="modal-box">
+                    <form method="dialog">
+                        {/* if there is a button in form, it will close the modal */}
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+                    <h3 className="font-bold text-lg"></h3>
+                    <form onSubmit={handleAddComment}>
+                        <div className="flex items-center border border-gray-300 rounded-3xl p-2">
+                            <input
+                                name="comment"
+                                type="text"
+                                placeholder="Write a comment..."
+                                className="flex-grow p-2 outline-none"
+                            />
+                            <button
+                                type="submit"
+                                className="ml-2 text-blue-500 hover:text-blue-700"
+                            >
+                                Send
+                            </button>
+                        </div>
+                    </form>
+                    <div>
+                        {Array.isArray(item.comment) && item.comment.length > 0 ? (
+                            item.comment.map((comment, index) => (
+                                <div key={index} className="p-2 border-b">
+                                    <p><strong>{comment.commentEmail}</strong>: {comment.text}</p>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No comments yet.</p>
+                        )}
+                    </div>
+                </div>
+
+            </dialog>
+        </div>
           </button>
 
           <button
@@ -180,7 +203,7 @@ const PostItem = ({ item }) => {
           </button>
         </div>
 
-        {showInput && (
+        {/* {showInput && (
           <div className="mt-4 px-5">
             <form onSubmit={handleComment}>
               <div className="flex items-center border border-gray-300 rounded-3xl p-2">
@@ -199,7 +222,7 @@ const PostItem = ({ item }) => {
               </div>
             </form>
           </div>
-        )}
+        )} */}
 
         {isModalOpen && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
