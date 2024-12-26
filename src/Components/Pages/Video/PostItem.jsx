@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import axios from "axios";
+
 import { useState } from "react";
 import { AiFillLike } from "react-icons/ai";
 import { FaComment, FaEarthAmericas, FaShareNodes } from "react-icons/fa6";
@@ -14,68 +14,60 @@ import {
   LinkedinShareButton,
 } from "react-share";
 import useAuth from "../../../Hooks/useAuth";
-
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+import { toast } from "react-hot-toast";
 
 const PostItem = ({ item }) => {
-  const { userName, userImage, title, photo, video, } = item;
+  const axios = useAxiosPublic()
+  const { userName, userImage, title, photo, video } = item;
   const [showInput, setShowInput] = useState(false);
-  const [showEmoji, setShowEmoji] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalComment, setIsModalComment] = useState(false);
+  const [showEmoji, setShowEmoji] = useState(false);
+
   const user = useAuth();
-  
+
   const shareURL = `http://localhost:5173`;
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const toggleInput = () => setShowInput(!showInput);
 
-  
 
-  const handleLikeEmoji = (emoji,index) => {
-    console.log(emoji,index);
-    
-    const userName = user.displayName;
-    const userImage = user.photoURL;
-    const likeData = {
-      userName,
-      userImage,
-      post_id: item._id,
-      like: index,
-    };
-  
-    axios
-      .post('http://localhost:5000/api/createlike', likeData)
-      .then((res) => {
-        console.log('Reaction created:', res.data);
-        // Optional: Update UI or state here to reflect the new reaction
-      })
-      .catch((err) => {
-        console.error('Error creating reaction:', err.response?.data || err.message);
-      });
-  };
+  const openCommentModal = () => setIsModalComment(true);
+  const closeCommentModal = () => setIsModalComment(false);
 
   const handleAddComment = async (e) => {
     e.preventDefault();
-    const text = e.target.comment.value; // Get comment text from the input
-    const commentEmail = user.email; // Ensure you are getting the email from the correct source
+    const text = e.target.comment.value;
+    const commentEmail = user.email;
+    const commentPhoto = user.photoURL
+    const commentName = user.displayName
 
     if (!text || !commentEmail) {
-        // Check if text and email are present before making the request
-        console.error("Comment text and user email are required");
-        return;
+      console.error("Comment text and user email are required");
+      return;
     }
 
-    const comment = { text, commentEmail }; // Construct the comment object
+    const comment = { text, commentEmail , commentPhoto, commentName };
 
     try {
-        const response = await axios.put(`http://localhost:5000/api/${item?._id}/putcomment`, comment);
-        console.log(response.data);
+      await axios.put(
+        `/api/${item._id}`,
+        comment
+      );
+      toast.success('Comment added successfully')
+      // Optionally update local comments
+      item.comment.push(comment);
+      setShowInput(false);
+      e.target.reset();
     } catch (error) {
-        console.error("Error adding comment:", error.response?.data?.message || error.message);
+      console.error(
+        "Error adding comment:",
+        error.response?.data?.message || error.message
+      );
     }
-};
+  };
 
-  
 
   return (
     <div className="mx-2 md:mx-4">
@@ -120,81 +112,49 @@ const PostItem = ({ item }) => {
         </div>
         <hr className="mx-5 my-3" />
 
+        {/* Comment And Like section */}
+        <div className="flex justify-end px-4">
+          {/* <span>
+            <AiFillLike />
+            <p className="px-5 py-2 text-gray-500 text-sm">{item.likes.length}</p>
+          </span> */}
+          <span onClick={openCommentModal} className="flex underline items-center">
+            <FaComment />
+            <p className="px-5 py-2 text-gray-500 text-sm">{item.comment.length}</p>
+          </span>
+        </div>
         <div className="flex px-4 justify-between items-center">
-          <div
-            className="relative"
-            onMouseEnter={() => setShowEmoji(true)}
-            onMouseLeave={() => setShowEmoji(false)}
-          >
-            <button className="flex items-center space-x-2 text-slate-500 cursor-pointer text-xl hover:text-blue-500 transition-colors duration-300">
-              <AiFillLike />
-              <p>Like</p>
-            </button>
-            {showEmoji && (
-              <div className="absolute top-[-53px] left-[-10px] bg-white p-2 rounded-lg shadow-md flex space-x-2">
-                {['👍', '💖', '😊', '😂', '😍', '😎', '😭', '😡'].map((emoji, index) => (
-                   <button
-                   key={index}
-                   onClick={() => handleLikeEmoji(emoji,index)}
-                   className="hover:translate-y-[-10px] transition-all duration-500 text-3xl"
-                 >
-                   {emoji}
-                 </button>
-                ))}
-              </div>
-            )}
+          <div className="flex px-4 justify-between items-center">
+            <div
+              className="relative"
+              onMouseEnter={() => setShowEmoji(true)}
+              onMouseLeave={() => setShowEmoji(false)}
+            >
+              <button className="flex items-center space-x-2 text-slate-500 cursor-pointer text-xl hover:text-blue-500 transition-colors duration-300">
+                <AiFillLike />
+                <p>Like</p>
+              </button>
+              {showEmoji && (
+                <div className="absolute top-[-53px] left-[-10px] bg-white p-2 rounded-lg shadow-md flex space-x-2">
+                  {['👍', '💖', '😊', '😂', '😍', '😎', '😭', '😡'].map((emoji, index) => (
+                    <button key={index} className="hover:translate-y-[-10px] transition-all duration-500 text-3xl">
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <button
-            onClick={toggleInput}
+            onClick={() => setShowInput(!showInput)}
             className="flex items-center space-x-2 text-slate-500 cursor-pointer text-xl hover:text-blue-500 transition-colors duration-300"
           >
             <FaComment />
-            <div>
-            {/* You can open the modal using document.getElementById('ID').showModal() method */}
-            <button className="" onClick={() => document.getElementById('my_modal_3').showModal()}>Comment</button>
-            <dialog id="my_modal_3" className="modal">
-                <div className="modal-box">
-                    <form method="dialog">
-                        {/* if there is a button in form, it will close the modal */}
-                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                    </form>
-                    <h3 className="font-bold text-lg"></h3>
-                    <form onSubmit={handleAddComment}>
-                        <div className="flex items-center border border-gray-300 rounded-3xl p-2">
-                            <input
-                                name="comment"
-                                type="text"
-                                placeholder="Write a comment..."
-                                className="flex-grow p-2 outline-none"
-                            />
-                            <button
-                                type="submit"
-                                className="ml-2 text-blue-500 hover:text-blue-700"
-                            >
-                                Send
-                            </button>
-                        </div>
-                    </form>
-                    <div>
-                        {Array.isArray(item.comment) && item.comment.length > 0 ? (
-                            item.comment.map((comment, index) => (
-                                <div key={index} className="p-2 border-b">
-                                    <p><strong>{comment.commentEmail}</strong>: {comment.text}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No comments yet.</p>
-                        )}
-                    </div>
-                </div>
-
-            </dialog>
-        </div>
+            <p>Comment</p>
           </button>
 
           <button
-            id="share-btn"
             onClick={openModal}
             className="flex items-center space-x-2 text-slate-500 cursor-pointer text-xl hover:text-blue-500 transition-colors duration-300"
           >
@@ -203,9 +163,9 @@ const PostItem = ({ item }) => {
           </button>
         </div>
 
-        {/* {showInput && (
+        {showInput && (
           <div className="mt-4 px-5">
-            <form onSubmit={handleComment}>
+            <form onSubmit={handleAddComment}>
               <div className="flex items-center border border-gray-300 rounded-3xl p-2">
                 <input
                   name="comment"
@@ -222,15 +182,27 @@ const PostItem = ({ item }) => {
               </div>
             </form>
           </div>
-        )} */}
+        )}
+        {/* Comment Modal */}
+        {isModalComment && (
+          <div className="fixed inset-0 z-50 bg-black bg-opacity-50  ">
+
+            <h3 className="font-bold text-black text-lg mb-4">Comment:</h3>
+            {
+              item.comment.map((comment) => {
+                <p>{comment.comment}</p>
+              })
+            }
+            <button
+              onClick={closeCommentModal}
+              className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200">Close</button>
+          </div>
+        )}
 
         {isModalOpen && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white rounded-lg shadow-lg p-6 mx-auto max-w-md animate__animated animate__fadeIn animate__faster">
+            <div className="bg-white rounded-lg shadow-lg p-6 mx-auto max-w-md">
               <h3 className="font-bold text-lg mb-4">Share With:</h3>
-              <p className="mb-4">
-                Choose Your Platforms where you want to share:
-              </p>
               <div className="flex items-center gap-4 mb-4">
                 <FacebookShareButton url={shareURL}>
                   <FacebookIcon size={40} round={true} />
