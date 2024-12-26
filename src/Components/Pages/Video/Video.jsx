@@ -4,7 +4,7 @@ import PostItem from "./PostItem"; // Assuming PostItem is a component to render
 
 const Video = () => {
   const [post, setPost] = useState([]);
-  console.log(post)
+  // console.log(post)
   
   const axiosPublic = useAxiosPublic();
 
@@ -12,7 +12,7 @@ const Video = () => {
     // Fetch data from the API
     axiosPublic.get('/api/getPost')
       .then(response => {
-        console.log(response.data); // Log the full response data to confirm its structure
+        // console.log(response.data); // Log the full response data to confirm its structure
         // Ensure that response.data.post is an array
         if (Array.isArray(response.data.post)) {
           setPost(response.data.post); // Set the posts array from response.data.post
@@ -27,7 +27,7 @@ const Video = () => {
       });
   }, [axiosPublic]);
 
-  console.log(post); // Log the post array to confirm it's set correctly
+  // console.log(post); // Log the post array to confirm it's set correctly
 
   return (
     <div className="my-4 bg-white py-1 rounded h-[500px] overflow-y-scroll">    
