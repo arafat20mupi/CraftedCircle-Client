@@ -56,8 +56,6 @@ const PostItem = ({ item }) => {
         comment
       );
       toast.success('Comment added successfully')
-      // Optionally update local comments
-      item.comment.push(comment);
       setShowInput(false);
       e.target.reset();
     } catch (error) {
