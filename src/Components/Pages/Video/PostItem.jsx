@@ -24,19 +24,25 @@ const PostItem = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalComment, setIsModalComment] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
+  const [isModalLike, setIsModalLike] = useState(false);
 
   const user = useAuth();
-  console.log(item.like);
 
 
-  const shareURL = `http://localhost:5173`;
+  const shareURL = `http://localhost:5173/item/${item._id}`;
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
 
+  const openLikeModal = () => setIsModalLike(true);
+  const closeLikeModal = () => setIsModalLike(false);
+
+
+
   const openCommentModal = () => setIsModalComment(true);
   const closeCommentModal = () => setIsModalComment(false);
+
 
   const handleAddComment = async (e) => {
     e.preventDefault();
@@ -67,7 +73,8 @@ const PostItem = ({ item }) => {
       );
     }
   };
-  console.log(item);
+
+
   const handleAddlike = async (emoji) => {
     const likeEmail = user.email;
     const likeName = user.displayName;
@@ -78,15 +85,16 @@ const PostItem = ({ item }) => {
       likeName,
       likePhoto
     }
-    // console.log(like);
 
     try {
       await axios.put(
         `/api/like/${item._id}`,
-        like
+        like,
+        toast.success('Like added successfully')
       );
     } catch (error) {
       console.log(error);
+      toast.error('Failed to add like')
 
     }
 
@@ -138,50 +146,35 @@ const PostItem = ({ item }) => {
 
         {/* Comment And Like section */}
         <div className="flex justify-end px-4">
-          {/* <span>
+          <span onClick={openLikeModal} className="flex underline items-center">
             <AiFillLike />
-            <p className="px-5 py-2 text-gray-500 text-sm">{item.likes.length}</p>
-          </span> */}
+            <p className="px-5 py-2 text-gray-500 text-sm">{item.like.length}</p>
+          </span>
           <span onClick={openCommentModal} className="flex underline items-center">
             <FaComment />
             <p className="px-5 py-2 text-gray-500 text-sm">{item.comment.length}</p>
           </span>
         </div>
         <div className="flex px-4 justify-between items-center">
-          <div className="flex px-4 justify-between items-center">
-            <div>
-              {
-                item?.like?.map((like, index) => (
-                  <div key={index}>
-                    {user?.email === like?.likeEmail ? (
-                      <p>{like.like}</p> // Show the like if the email matches
-                    ) : (
-                      <p>Like</p> // Show "Like" if the email doesn't match
-                    )}
-                  </div>
-                ))
-              }
-            </div>
-
-            <div
-              className="relative"
-              onMouseEnter={() => setShowEmoji(true)}
-              onMouseLeave={() => setShowEmoji(false)}
-            >
-              <button className="flex items-center space-x-2 text-slate-500 cursor-pointer text-xl hover:text-blue-500 transition-colors duration-300">
-                <AiFillLike />
-                <p>Like</p>
-              </button>
-              {showEmoji && (
-                <div className="absolute top-[-53px] left-[-10px] bg-white p-2 rounded-lg shadow-md flex space-x-2">
-                  {['👍', '💖', '😊', '😂', '😍', '😎', '😭', '😡'].map((emoji, index) => (
-                    <button onClick={() => handleAddlike(emoji)} key={index} className="hover:translate-y-[-10px] transition-all duration-500 text-3xl">
-                      {emoji}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+          <div className="flex px-4 justify-between items-center"><div
+            className="relative"
+            onMouseEnter={() => setShowEmoji(true)}
+            onMouseLeave={() => setShowEmoji(false)}
+          >
+            <button className="flex items-center space-x-2 text-slate-500 cursor-pointer text-xl hover:text-blue-500 transition-colors duration-300">
+              <AiFillLike />
+              <p>Like</p>
+            </button>
+            {showEmoji && (
+              <div className="absolute top-[-53px] left-[-10px] bg-white p-2 rounded-lg shadow-md flex space-x-2">
+                {['👍', '💖', '😊', '😂', '😍', '😎', '😭', '😡'].map((emoji, index) => (
+                  <button onClick={() => handleAddlike(emoji)} key={index} className="hover:translate-y-[-10px] transition-all duration-500 text-3xl">
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           </div>
 
           <button
@@ -232,7 +225,7 @@ const PostItem = ({ item }) => {
                     <div className="flex gap-2">
                       <div className="avatar">
                         <div className="w-10 rounded-full">
-                          <img src={comment.userImage} />
+                          <img src={comment.commentPhoto} />
                         </div>
                       </div>
                       <div>
@@ -246,6 +239,39 @@ const PostItem = ({ item }) => {
               </div>
               <button
                 onClick={closeCommentModal}
+                className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200 mt-4"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Like Modal */}
+        {isModalLike && (
+          <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="bg-white w-[500px] p-6 rounded shadow-lg flex flex-col items-center">
+              <h3 className="font-bold text-black text-lg mb-4">Like:</h3>
+              <div className="w-full max-h-60 overflow-y-auto  p-2">
+                {item.like.map((like, index) => (
+                  <div key={index} className="mb-2 text-gray-700">
+                    <div className="flex gap-2">
+                      <div className="avatar">
+                        <div className="w-10 rounded-full">
+                          <img src={like.likePhoto} />
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-black text-xl">{like.likeName}</p>
+                        <p>{like.like}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={closeLikeModal}
                 className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200 mt-4"
               >
                 Close

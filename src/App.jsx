@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./Components/Share/NavBar";
-import Footer from "./Components/Share/Footer";
 import { AuthContext } from "./provider/AuthProvider";
 import { useContext } from "react";
 import SignIn from "./Components/signin/Signin";
@@ -15,10 +14,9 @@ const App = () => {
         user ? (
           <div>
             <NavBar />
-            <div className="py-6">
+            <div className="pt-3">
               <Outlet />
             </div>
-            <Footer />
           </div>
         ) :
           (
