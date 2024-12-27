@@ -26,6 +26,8 @@ const PostItem = ({ item }) => {
   const [showEmoji, setShowEmoji] = useState(false);
 
   const user = useAuth();
+  console.log(item.like);
+
 
   const shareURL = `http://localhost:5173`;
 
@@ -48,7 +50,7 @@ const PostItem = ({ item }) => {
       return;
     }
 
-    const comment = { text, commentEmail , commentPhoto, commentName };
+    const comment = { text, commentEmail, commentPhoto, commentName };
 
     try {
       await axios.put(
@@ -64,6 +66,30 @@ const PostItem = ({ item }) => {
         error.response?.data?.message || error.message
       );
     }
+  };
+  console.log(item);
+  const handleAddlike = async (emoji) => {
+    const likeEmail = user.email;
+    const likeName = user.displayName;
+    const likePhoto = user.photoURL;
+    const like = {
+      like: emoji,
+      likeEmail,
+      likeName,
+      likePhoto
+    }
+    // console.log(like);
+
+    try {
+      await axios.put(
+        `/api/like/${item._id}`,
+        like
+      );
+    } catch (error) {
+      console.log(error);
+
+    }
+
   };
 
 
@@ -123,6 +149,20 @@ const PostItem = ({ item }) => {
         </div>
         <div className="flex px-4 justify-between items-center">
           <div className="flex px-4 justify-between items-center">
+            <div>
+              {
+                item?.like?.map((like, index) => (
+                  <div key={index}>
+                    {user?.email === like?.likeEmail ? (
+                      <p>{like.like}</p> // Show the like if the email matches
+                    ) : (
+                      <p>Like</p> // Show "Like" if the email doesn't match
+                    )}
+                  </div>
+                ))
+              }
+            </div>
+
             <div
               className="relative"
               onMouseEnter={() => setShowEmoji(true)}
@@ -135,7 +175,7 @@ const PostItem = ({ item }) => {
               {showEmoji && (
                 <div className="absolute top-[-53px] left-[-10px] bg-white p-2 rounded-lg shadow-md flex space-x-2">
                   {['👍', '💖', '😊', '😂', '😍', '😎', '😭', '😡'].map((emoji, index) => (
-                    <button key={index} className="hover:translate-y-[-10px] transition-all duration-500 text-3xl">
+                    <button onClick={() => handleAddlike(emoji)} key={index} className="hover:translate-y-[-10px] transition-all duration-500 text-3xl">
                       {emoji}
                     </button>
                   ))}
@@ -183,19 +223,37 @@ const PostItem = ({ item }) => {
         )}
         {/* Comment Modal */}
         {isModalComment && (
-          <div className="fixed inset-0 z-50 bg-black bg-opacity-50  ">
+          <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="bg-white w-[500px] p-6 rounded shadow-lg flex flex-col items-center">
+              <h3 className="font-bold text-black text-lg mb-4">Comment:</h3>
+              <div className="w-full max-h-60 overflow-y-auto  p-2">
+                {item.comment.map((comment, index) => (
+                  <div key={index} className="mb-2 text-gray-700">
+                    <div className="flex gap-2">
+                      <div className="avatar">
+                        <div className="w-10 rounded-full">
+                          <img src={comment.userImage} />
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-black text-xl">{comment.commentEmail}</p>
+                        <p>{comment.text}</p>
+                      </div>
+                    </div>
 
-            <h3 className="font-bold text-black text-lg mb-4">Comment:</h3>
-            {
-              item.comment.map((comment) => {
-                <p>{comment.comment}</p>
-              })
-            }
-            <button
-              onClick={closeCommentModal}
-              className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200">Close</button>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={closeCommentModal}
+                className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200 mt-4"
+              >
+                Close
+              </button>
+            </div>
           </div>
         )}
+
 
         {isModalOpen && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">

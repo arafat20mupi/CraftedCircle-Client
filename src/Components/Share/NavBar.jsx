@@ -12,7 +12,7 @@ import ChatBox from "./ChatBox";
 
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
-  console.log(user);
+  // console.log(user);
   const [isFocused, setIsFocused] = useState(false);
       
   const handleLogout = () => {
