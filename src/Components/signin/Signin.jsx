@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { FaGoogle } from "react-icons/fa6";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -32,13 +33,27 @@ const SignIn = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    try {
-      await signGoogle();
-      toast.success("Google signed in successfully");
-      navigate("/");
-    } catch (error) {
-      toast.error(error.message || "Google sign-in failed");
-    }
+    signGoogle()
+      .then((result) => {
+        console.log(result.user); // Log the result of Google sign-up
+        const password=12345678
+        const userInfo = {
+          name: result.user.displayName,
+          email: result.user.email,
+          uid: result.user.email.uid,
+          profileImg: result.user.photoURL,
+          password
+        };
+        const response = axios.post("/api/Users", userInfo);
+        console.log("User registered:", response.data);
+
+        toast.success("Google Sign-Up successful!");
+        // navigate("/");
+      })
+      .catch((error) => {
+        console.error(error); // Log any errors for debugging
+        toast.error("Error signing up with Google.");
+      });
   };
 
   return (
