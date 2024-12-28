@@ -42,7 +42,7 @@ const SignUp = () => {
         password
       };
 
-      const response = await axios.post("/api/Users", userInfo);
+      const response = await axios.post("/api/users", userInfo);
       console.log("User registered:", response.data);
 
       toast.success("Sign up successful!");
@@ -54,28 +54,34 @@ const SignUp = () => {
   };
 
 
-  const handleGoogleSignUp = () => {
-    signGoogle()
-      .then((result) => {
-        console.log(result.user); // Log the result of Google sign-up
-        const password=12345678
-        const userInfo = {
-          name: result.user.displayName,
-          email: result.user.email,
-          uid: result.user.email.uid,
-          profileImg: result.user.photoURL,
-          password
-        };
-        const response = axios.post("/api/Users", userInfo);
-        console.log("User registered:", response.data);
+  const handleGoogleSignUp = async () => {
+    try {
+      const result = await signGoogle();
+      const userInfo = {
+        name: result.user.displayName,
+        email: result.user.email,
+        uid: result.user.uid,
+        profileImg: result.user.photoURL,
+        password: '12345678'
+      };
 
-        toast.success("Google Sign-Up successful!");
-        // navigate("/");
-      })
-      .catch((error) => {
-        console.error(error); // Log any errors for debugging
-        toast.error("Error signing up with Google.");
-      });
+      // Check if user already exists
+      const existingUserResponse = await axios.get(`/api/users/${userInfo.email}`);
+      if (existingUserResponse.data) {
+        toast.success("User Login Successful");
+        return;
+      }
+
+      // Register new user
+      await axios.post("/api/users", userInfo);
+
+
+      toast.success("Google Sign-Up successful!");
+      navigate("/");
+    } catch (error) {
+      console.error(error); // Log any errors for debugging
+      toast.error("Error signing up with Google.");
+    }
   };
 
 

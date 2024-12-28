@@ -6,12 +6,14 @@ import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { FaGoogle } from "react-icons/fa6";
 import toast from "react-hot-toast";
-import axios from "axios";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const { signIn, signGoogle } = useContext(AuthContext);
-  
+
+  const axios = useAxiosPublic();
+
   const {
     register,
     handleSubmit,
@@ -33,27 +35,32 @@ const SignIn = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    signGoogle()
-      .then((result) => {
-        console.log(result.user); // Log the result of Google sign-up
-        const password=12345678
-        const userInfo = {
-          name: result.user.displayName,
-          email: result.user.email,
-          uid: result.user.email.uid,
-          profileImg: result.user.photoURL,
-          password
-        };
-        const response = axios.post("/api/Users", userInfo);
-        console.log("User registered:", response.data);
+    try {
+      const result = await signGoogle();
+      const userInfo = {
+        name: result.user.displayName,
+        email: result.user.email,
+        uid: result.user.uid,
+        profileImg: result.user.photoURL,
+        password: '12345678'
+      };
 
-        toast.success("Google Sign-Up successful!");
-        // navigate("/");
-      })
-      .catch((error) => {
-        console.error(error); // Log any errors for debugging
-        toast.error("Error signing up with Google.");
-      });
+      // Check if user already exists
+      const existingUserResponse = await axios.get(`/api/users/${userInfo.email}`);
+      if (existingUserResponse.data) {
+        toast.success("User Login Successful");
+        return;
+      }
+
+      // Register new user
+await axios.post("/api/users", userInfo);
+
+      toast.success("Google Sign-Up successful!");
+      navigate("/");
+    } catch (error) {
+      console.error(error); // Log any errors for debugging
+      toast.error("Error signing up with Google.");
+    }
   };
 
   return (
@@ -83,9 +90,8 @@ const SignIn = () => {
                 id="email"
                 {...register("email", { required: "Email is required" })}
                 placeholder="Enter your Email"
-                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-indigo-500 ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-indigo-500 ${errors.email ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.email && (
                 <p className="text-red-500">{errors.email.message}</p>
@@ -102,9 +108,8 @@ const SignIn = () => {
                 id="password"
                 {...register("password", { required: "Password is required" })}
                 placeholder="Enter your Password"
-                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-indigo-500 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-indigo-500 ${errors.password ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>
