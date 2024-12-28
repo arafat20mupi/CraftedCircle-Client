@@ -56,16 +56,28 @@ const SignUp = () => {
 
   const handleGoogleSignUp = () => {
     signGoogle()
-      .then(() => {
+      .then((result) => {
+        console.log(result.user); // Log the result of Google sign-up
+        const password=12345678
+        const userInfo = {
+          name: result.user.displayName,
+          email: result.user.email,
+          uid: result.user.email.uid,
+          profileImg: result.user.photoURL,
+          password
+        };
+        const response = axios.post("/api/Users", userInfo);
+        console.log("User registered:", response.data);
 
         toast.success("Google Sign-Up successful!");
-        navigate("/");
-
+        // navigate("/");
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error); // Log any errors for debugging
         toast.error("Error signing up with Google.");
       });
   };
+
 
   return (
     <div className="flex items-center justify-center py-6 md:py-10 lg:py-16">

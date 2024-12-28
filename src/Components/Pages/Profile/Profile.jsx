@@ -9,8 +9,19 @@ import { IoEarthOutline } from "react-icons/io5";
 import Video from "../Video/Video";
 import useAuth from "../../../Hooks/useAuth";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 const Profile = () => {
   const user = useAuth();
+  const [userInfo,setUserInfo]=useState()
+  const axiosPublic=useAxiosPublic()
+  useEffect(()=>{
+    axiosPublic.get(`/api/users/${user.email}`)
+    .then(res=>setUserInfo(res.data))
+  },[axiosPublic,user])
+  console.log(userInfo);
+  
+  
   let profile_pic =
     "https://media.istockphoto.com/id/1443562748/photo/cute-ginger-cat.jpg?s=612x612&w=0&k=20&c=vvM97wWz-hMj7DLzfpYRmY2VswTqcFEKkC437hxm3Cg=";
 
@@ -25,7 +36,7 @@ const Profile = () => {
       <div className="bg-white shadow-md mx-auto py-10 md:px-20 flex justify-between  flex-col md:flex-row items-center">
         <div className="flex flex-col md:flex-row items-center gap-2">
           <img
-            src={profile_pic}
+            src={userInfo?.profileImg}
             alt="Profile"
             className="w-[100px] h-[100px] md:w-[140px] md:h-[140px] rounded-full"
           />
