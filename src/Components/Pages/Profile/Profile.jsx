@@ -44,14 +44,11 @@ const Profile = () => {
 
     // Retrieve the file URL from Cloudinary's response
     const fileUrl = cloudinaryRes.data.secure_url;
-    console.log("Uploaded File URL:", fileUrl);
-    const finalData = {
-      coverImg: fileUrl
-    }
+
 
     try {
 
-      const response = await axios.put(`/api/users/${userInfo._id}`, finalData);
+      const response = await axiosPublic.put(`/api/users/${userInfo._id}`, {coverImg: fileUrl});
       console.log("Profile Updated:", response.data);
     } catch (error) {
       console.error(
