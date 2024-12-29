@@ -11,17 +11,92 @@ import useAuth from "../../../Hooks/useAuth";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+import { IoIosCamera } from "react-icons/io";
+import axios from "axios";
+
+const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 const Profile = () => {
   const user = useAuth();
-  const [userInfo,setUserInfo]=useState()
-  const axiosPublic=useAxiosPublic()
-  useEffect(()=>{
+  const [userInfo, setUserInfo] = useState()
+  const axiosPublic = useAxiosPublic()
+  useEffect(() => {
     axiosPublic.get(`/api/users/${user.email}`)
-    .then(res=>setUserInfo(res.data))
-  },[axiosPublic,user])
+      .then(res => setUserInfo(res.data))
+  }, [axiosPublic, user])
   console.log(userInfo);
-  
-  
+
+  const handleCover = async (e) => {
+    e.preventDefault(); // Prevent the default form submission
+
+    const coverInput = e.target.cover; // Get the file input element
+    const coverFile = coverInput.files[0]; // Get the first selected file
+    // Create FormData to upload the file
+    const formData = new FormData();
+    formData.append("file", coverFile); // Attach the file
+    formData.append("upload_preset", uploadPreset); // Cloudinary upload preset
+
+    // API call to Cloudinary
+    const cloudinaryRes = await axios.post(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,  // Corrected the URL with "image/upload"
+      formData
+    );
+
+    // Retrieve the file URL from Cloudinary's response
+    const fileUrl = cloudinaryRes.data.secure_url;
+    console.log("Uploaded File URL:", fileUrl);
+    const finalData = {
+      coverImg: fileUrl
+    }
+
+    try {
+
+      const response = await axios.put(`/api/users/${userInfo._id}`, finalData);
+      console.log("Profile Updated:", response.data);
+    } catch (error) {
+      console.error(
+        "Error updating profile:",
+        error.response?.data || error.message
+      );
+    }
+  };
+  const handleProfile = async (e) => {
+    e.preventDefault(); // Prevent the default form submission
+
+    const coverInput = e.target.profile; // Get the file input element
+    const coverFile = coverInput.files[0]; // Get the first selected file
+    // Create FormData to upload the file
+    const formData = new FormData();
+    formData.append("file", coverFile); // Attach the file
+    formData.append("upload_preset", uploadPreset); // Cloudinary upload preset
+
+    // API call to Cloudinary
+    const cloudinaryRes = await axios.post(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,  // Corrected the URL with "image/upload"
+      formData
+    );
+
+    // Retrieve the file URL from Cloudinary's response
+    const fileUrl = cloudinaryRes.data.secure_url;
+    console.log("Uploaded File URL:", fileUrl);
+    const finalData = {
+      profileImg: fileUrl
+    }
+
+    try {
+
+      const response = await axios.put(`/api/users/${userInfo._id}`, finalData);
+      console.log("Profile Updated:", response.data);
+    } catch (error) {
+      console.error(
+        "Error updating profile:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+
+
   let profile_pic =
     "https://media.istockphoto.com/id/1443562748/photo/cute-ginger-cat.jpg?s=612x612&w=0&k=20&c=vvM97wWz-hMj7DLzfpYRmY2VswTqcFEKkC437hxm3Cg=";
 
@@ -31,15 +106,108 @@ const Profile = () => {
     <div>
       {/* profile top */}
       <header className="">
-        <img src={cover} alt="" className="w-full h-[250px]" />
+        <img src={cover} alt="" className="w-full h-[250px] relative" />
+        <div className="absolute left-[1350px] top-80">
+          {/* Open the modal using document.getElementById('ID').showModal() method */}
+          <div className="relative left-[100%]">
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            <button
+              className="btn w-16 h-16 rounded-full flex items-center justify-center"
+              onClick={() => document.getElementById('my_modal_1').showModal()}
+            >
+              <IoIosCamera className="font-bold text-4xl" />
+            </button>
+
+            <dialog id="my_modal_1" className="modal">
+              <div className="modal-box">
+                <div>
+                  <form onSubmit={handleCover} className="flex flex-col items-center gap-4">
+                    <div className="flex flex-col items-center gap-2">
+                      <label htmlFor="cover" className="text-lg font-medium text-gray-900">Upload Cover Image</label>
+                      <input
+                        id="cover"
+                        name="cover"
+                        type="file"
+                        accept="image/*"
+                        className="file:border file:border-gray-300 file:rounded-md file:px-3 file:py-2 file:text-sm file:cursor-pointer file:bg-gray-50 hover:file:bg-gray-100"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="bg-blue-600 text-white py-2 px-6 rounded-md mt-4 hover:bg-blue-700 active:scale-95 transition duration-150"
+                    >
+                      Upload
+                    </button>
+                  </form>
+
+                </div>
+                <div className="modal-action">
+                  <form method="dialog">
+                    {/* If there is a button in the form, it will close the modal */}
+                    <button className="btn">Close</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+          </div>
+
+        </div>
       </header>
       <div className="bg-white shadow-md mx-auto py-10 md:px-20 flex justify-between  flex-col md:flex-row items-center">
         <div className="flex flex-col md:flex-row items-center gap-2">
-          <img
+          
+
+        <img
             src={userInfo?.profileImg}
             alt="Profile"
-            className="w-[100px] h-[100px] md:w-[140px] md:h-[140px] rounded-full"
+            className="w-[100px] h-[100px] md:w-[140px] md:h-[140px] rounded-full relative"
           />
+          <div className="absolute">
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            <div className="relative left-28">
+              {/* Open the modal using document.getElementById('ID').showModal() method */}
+              <button
+                className="btn w-12 h-12 rounded-full flex items-center justify-center"
+                onClick={() => document.getElementById('my_modal_1').showModal()}
+              >
+                <IoIosCamera className="font-bold text-2xl" />
+              </button>
+
+              <dialog id="my_modal_1" className="modal">
+                <div className="modal-box">
+                  <div>
+                    <form onSubmit={handleProfile} className="flex flex-col items-center gap-4">
+                      <div className="flex flex-col items-center gap-2">
+                        <label htmlFor="profile" className="text-lg font-medium text-gray-900">Upload Cover Image</label>
+                        <input
+                          id="profile"
+                          name="profile"
+                          type="file"
+                          accept="image/*"
+                          className="file:border file:border-gray-300 file:rounded-md file:px-3 file:py-2 file:text-sm file:cursor-pointer file:bg-gray-50 hover:file:bg-gray-100"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="bg-blue-600 text-white py-2 px-6 rounded-md mt-4 hover:bg-blue-700 active:scale-95 transition duration-150"
+                      >
+                        Upload
+                      </button>
+                    </form>
+
+                  </div>
+                  <div className="modal-action">
+                    <form method="dialog">
+                      {/* If there is a button in the form, it will close the modal */}
+                      <button className="btn">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+            </div>
+
+          </div>
+
           <div className="mx-3">
             <div className="flex  items-center gap-2 ">
               <h1 className="text-gray-950 text-3xl mx-2 ">{user.displayName}</h1>
@@ -107,13 +275,13 @@ const Profile = () => {
           <div className="bg-white shadow-md my-5 md:my-0 mx-auto rounded-lg py-10 px-5 md:px-20 flex flex-col gap-5">
             <h1 className="text-2xl text-white">Photos</h1>
             <div className="flex flex-col">
-             <div className="grid grid-cols-3">
-                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500"/>
-                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500"/>
-                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500"/>
-                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500"/>
-                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500"/>
-                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500"/>
+              <div className="grid grid-cols-3">
+                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500" />
+                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500" />
+                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500" />
+                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500" />
+                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500" />
+                <img src={profile_pic} alt="" className="rounded ring-2 ring-gray-500" />
               </div>
             </div>
           </div>
