@@ -4,38 +4,40 @@ import PostItem from "./PostItem"; // Assuming PostItem is a component to render
 
 const Video = () => {
   const [post, setPost] = useState([]);
-  // console.log(post)
-  
   const axiosPublic = useAxiosPublic();
 
   useEffect(() => {
-    // Fetch data from the API
-    axiosPublic.get('/api/getPost')
-      .then(response => {
-        // console.log(response.data); // Log the full response data to confirm its structure
-        // Ensure that response.data.post is an array
-        if (Array.isArray(response.data.post)) {
-          setPost(response.data.post); // Set the posts array from response.data.post
-        } else {
-          console.warn("Response data is not in the expected format:", response.data);
-          setPost([]); // Handle the case where the data is not in the expected format
-        }
-      })
-      .catch(error => {
-        console.error('There was an error fetching the data!', error);
-        setPost([]); // Handle error by setting post to an empty array
-      });
+    const fetchPosts = () => {
+      axiosPublic.get("/api/getPost")
+        .then(response => {
+          if (Array.isArray(response.data.post)) {
+            setPost(response.data.post);
+          } else {
+            console.warn("Response data is not in the expected format:", response.data);
+            setPost([]);
+          }
+        })
+        .catch(error => {
+          console.error("There was an error fetching the data!", error);
+          setPost([]);
+        });
+    };
+
+    // Fetch data initially and then every 2 seconds
+    fetchPosts();
+    const intervalId = setInterval(fetchPosts, 2000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, [axiosPublic]);
 
-  // console.log(post); // Log the post array to confirm it's set correctly
-
   return (
-    <div className="my-4 bg-white py-1 rounded h-[500px] overflow-y-scroll">    
+    <div className="my-4 bg-white py-1 rounded h-[500px] overflow-y-scroll">
       {post.length === 0 ? (
-        <p>No posts available.</p> // Display a message when there are no posts
+        <p className="text-center text-gray-500">No posts available.</p>
       ) : (
         post.map((item, index) => (
-          <PostItem key={item._id} index={index} item={item} /> // Render each post using PostItem
+          <PostItem key={item._id || index} index={index} item={item} />
         ))
       )}
     </div>
